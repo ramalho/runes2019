@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"golang.org/x/text/unicode/runenames"
 )
 
 type CharName struct {
@@ -17,7 +18,10 @@ func (cn CharName) display() string {
 func scan(start, end rune) <-chan CharName {
 	ch := make(chan CharName)
 	go func() {
-		ch <- CharName{' ', "SPACE"}
+		for char := start; char < end; char ++ {
+			name := runenames.Name(char)
+			ch <- CharName{char, name}
+		}
 		close(ch)
 	}()
 	return ch

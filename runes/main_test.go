@@ -15,11 +15,11 @@ func Example_report() {
 	// 1 character found
 }
 
-func Test_scan(t *testing.T) {
+func Test_scan_just_space(t *testing.T) {
 	expected := CharName{'\u0020', "SPACE"}
 	count := 0
 	char := CharName{}
-	for char = range scan('\u0000', '\u0021') {
+	for char = range scan('\u0020', '\u0021') {
 		count++
 	}
 	if char != expected {
