@@ -18,7 +18,7 @@ func Example_report() {
 func Test_scan(t *testing.T) {
 	expected := CharName{'\u0020', "SPACE"}
 	count := 0
-	char:= CharName{}
+	char := CharName{}
 	for char = range scan('\u0000', '\u0021') {
 		count++
 	}
@@ -28,5 +28,4 @@ func Test_scan(t *testing.T) {
 	if count != 1 {
 		t.Errorf("expected count = 1, got %d", count)
 	}
-	
 }

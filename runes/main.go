@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"golang.org/x/text/unicode/runenames"
 )
 
 type CharName struct {
@@ -11,6 +10,9 @@ type CharName struct {
 	Name string
 }
 
+func (cn CharName) display() string {
+	return fmt.Sprintf("%U\t%c\t%s", cn.Char, cn.Char, cn.Name)
+}
 
 func scan(start, end rune) <-chan CharName {
 	ch := make(chan CharName)
@@ -22,9 +24,8 @@ func scan(start, end rune) <-chan CharName {
 }
 
 func report(words ...string) {
-	char := '\u2108'
-	name := runenames.Name(char)
-	fmt.Printf("%U\t%c\t%s\n", char, char, name)
+	charName := CharName{'\u2108', "SCRUPLE"}
+	fmt.Printf("%s\n", charName.display())
 	count := 1
 	fmt.Printf("%d character found", count)
 }
@@ -32,7 +33,7 @@ func report(words ...string) {
 func main() {
 	if len(os.Args) > 1 {
 		report(os.Args[1:]...)
-	} else {	
+	} else {
 		fmt.Println("Please provide one or more words to search.")
 	}
 }
