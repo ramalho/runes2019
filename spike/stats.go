@@ -23,7 +23,7 @@ func main() {
 			continue
 		}
 		rangeCounts[name]++
-		if rangeCounts[name] == 1 {
+		if rangeCounts[name] == 2 {
 			rangeNames = append(rangeNames, name)
 		}
 		if name[0] != '<' {
