@@ -43,6 +43,6 @@ func main() {
 	}
 	fmt.Println(strings.Repeat("_", 60))
 	fmt.Printf("%6d\tcharacters with unique names\n", uniqueCount)
-	fmt.Printf("first named character:\t%U\t%q\t%s\n", firstNamed, firstNamed, runenames.Name(firstNamed))
-	fmt.Printf(" last named character:\t%U\t%q\t%s\n", lastNamed, lastNamed, runenames.Name(lastNamed))
+	fmt.Printf("first:\t%U\t%q\t%s\n", firstNamed, firstNamed, runenames.Name(firstNamed))
+	fmt.Printf(" last:\t%U\t%q\t%s\n", lastNamed, lastNamed, runenames.Name(lastNamed))
 }

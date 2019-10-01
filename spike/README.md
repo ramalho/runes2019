@@ -26,6 +26,6 @@ Repeated character names (with counts):
  65534	<Plane 16 Private Use>
 ____________________________________________________________
  31523	characters with unique names
-first named character:	U+0020	' '	SPACE
- last named character:	U+E01EF	'󠇯'	VARIATION SELECTOR-256
+first:	U+0020	' '	SPACE
+ last:	U+E01EF	'󠇯'	VARIATION SELECTOR-256
 ```
