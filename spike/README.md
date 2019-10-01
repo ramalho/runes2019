@@ -2,7 +2,6 @@
 
 Program `stats.go` computes basic statistics about names from the Unicode Character Database provided by the [`runenames` package](https://godoc.org/golang.org/x/text/unicode/runenames).
 
-
 ```
 $ go run stats.go
 unicode.MaxRune =  1114111
@@ -28,4 +27,28 @@ ____________________________________________________________
  31523	characters with unique names
 first:	U+0020	' '	SPACE
  last:	U+E01EF	'󠇯'	VARIATION SELECTOR-256
+```
+
+## Interesting names
+
+Some characters with single word names and codes < U+2FFF:
+
+```
+U+2042	⁂	ASTERISM
+U+205D	⁝	TRICOLON
+U+2108	℈	SCRUPLE
+```
+
+Some characters with more than one word, at least one unique:
+
+```
+U+00AE	®	REGISTERED SIGN
+U+20A2	₢	CRUZEIRO SIGN
+```
+
+Character with word ocurring only twice in the database:
+
+```
+U+00A9	©	COPYRIGHT SIGN
+U+2117	℗	SOUND RECORDING COPYRIGHT
 ```

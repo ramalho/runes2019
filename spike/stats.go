@@ -12,6 +12,7 @@ const first, last = ' ', unicode.MaxRune
 
 func main() {
 	rangeNames := []string{}
+	singleWordChars := []rune{}
 	rangeCounts := make(map[string]int)
 	fmt.Println("unicode.MaxRune = ", unicode.MaxRune)
 	fmt.Println("runenames.UnicodeVersion = ", runenames.UnicodeVersion)
@@ -32,6 +33,9 @@ func main() {
 				firstNamed = char
 			}
 			lastNamed = char
+			if !strings.ContainsRune(name, ' ') {
+				singleWordChars = append(singleWordChars, char)
+			}
 		}
 	}
 	fmt.Println("Repeated character names (with counts):")
@@ -45,4 +49,10 @@ func main() {
 	fmt.Printf("%6d\tcharacters with unique names\n", uniqueCount)
 	fmt.Printf("first:\t%U\t%q\t%s\n", firstNamed, firstNamed, runenames.Name(firstNamed))
 	fmt.Printf(" last:\t%U\t%q\t%s\n", lastNamed, lastNamed, runenames.Name(lastNamed))
+	fmt.Println("Single word character names < U+2FFF:")
+	for _, char := range singleWordChars {
+		if char < 0x2FFF {
+			fmt.Printf("%U\t%c\t%s\n", char, char, runenames.Name(char))
+		}
+	}
 }
