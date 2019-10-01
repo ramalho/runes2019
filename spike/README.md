@@ -1,6 +1,6 @@
 # Statistics for Unicode names
 
-Program `stats.go` computes basic statistics about names in the Unicode Character database provided by the [`runenames` package](https://godoc.org/golang.org/x/text/unicode/runenames).
+Program `stats.go` computes basic statistics about names from the Unicode Character Database provided by the [`runenames` package](https://godoc.org/golang.org/x/text/unicode/runenames).
 
 
 ```
