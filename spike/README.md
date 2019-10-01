@@ -7,7 +7,7 @@ Program `stats.go` computes basic statistics about names in the Unicode Characte
 $ go run stats.go
 unicode.MaxRune =  1114111
 runenames.UnicodeVersion =  10.0.0
-Named ranges of characters (with counts):
+Repeated character names (with counts):
     33	<control>
   6582	<CJK Ideograph Extension A>
  20971	<CJK Ideograph>
