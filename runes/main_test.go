@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"unicode"
@@ -10,6 +11,9 @@ import (
 )
 
 func Example() {
+	oldArgs := os.Args
+	defer func() { os.Args = oldArgs }()
+	os.Args = []string{"<executable-name>"}
 	main()
 	// Output:
 	// Please provide one or more words to search.
@@ -20,6 +24,20 @@ func Example_report() {
 	// Output:
 	// U+2108	℈	SCRUPLE
 	// 1 character found
+}
+
+func Example_report_2_results() {
+	report("copyright")
+	// Output:
+	// U+00A9	©	COPYRIGHT SIGN
+	// U+2117	℗	SOUND RECORDING COPYRIGHT
+	// 2 characters found
+}
+
+func Example_report_no_result() {
+	report("nosuchcharacter")
+	// Output:
+	// no character found
 }
 
 func Test_scan_just_space(t *testing.T) {
@@ -118,6 +136,25 @@ func Test_tokenize(t *testing.T) {
 		t.Run(tc.given, func(t *testing.T) {
 			actual := tokenize(tc.given)
 			assert.Equal(t, tc.expected, actual)
+		})
+	}
+}
+
+func Test_quantify(t *testing.T) {
+	testCases := []struct {
+		given  int
+		count  string
+		plural string
+	}{
+		{0, "no", ""},
+		{1, "1", ""},
+		{2, "2", "s"},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%d", tc.given), func(t *testing.T) {
+			count, plural := quantify(tc.given)
+			assert.Equal(t, tc.count, count)
+			assert.Equal(t, tc.plural, plural)
 		})
 	}
 }

@@ -72,6 +72,20 @@ func filter(iterator <-chan CharName, query []string) <-chan CharName {
 	return output
 }
 
+func quantify(n int) (count, plural string) {
+	if n > 1 {
+		plural = "s"
+	} else {
+		plural = ""
+	}
+	if n > 0 {
+		count = fmt.Sprintf("%d", n)
+	} else {
+		count = "no"
+	}
+	return
+}
+
 func report(words ...string) {
 	scanner := scan(' ', unicode.MaxRune)
 	count := 0
@@ -79,7 +93,8 @@ func report(words ...string) {
 		fmt.Printf("%s\n", charName.display())
 		count++
 	}
-	fmt.Printf("%d character found", count)
+	countStr, plural := quantify(count)
+	fmt.Printf("%s character%s found", countStr, plural)
 }
 
 func main() {
