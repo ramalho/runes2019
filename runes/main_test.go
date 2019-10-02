@@ -73,6 +73,10 @@ func Test_filter(t *testing.T) {
 		expected []CharName
 	}{
 		{[]string{"SCRUPLE"}, []CharName{{'\u2108', "SCRUPLE"},}},
+		{[]string{"copyright"}, []CharName{
+			{'\u00A9', "COPYRIGHT SIGN"},
+			{'\u2117', "SOUND RECORDING COPYRIGHT"},
+		}},
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {

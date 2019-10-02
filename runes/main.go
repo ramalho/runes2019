@@ -34,7 +34,7 @@ func filter(iterator <-chan CharName, query []string) <-chan CharName {
 	output := make(chan CharName)
 	go func() {
 		for cn := range iterator {
-			if strings.Contains(cn.Name, query[0]) {
+			if strings.Contains(cn.Name, strings.ToUpper(query[0])) {
 				output <- cn
 			}
 		}
