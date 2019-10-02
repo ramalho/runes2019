@@ -80,6 +80,15 @@ func Test_filter(t *testing.T) {
 		{[]string{"copy"}, []CharName{
 			{'\u32A2', "CIRCLED IDEOGRAPH COPY"},
 		}},
+		{[]string{"copyright", "sound"}, []CharName{
+			{'\u2117', "SOUND RECORDING COPYRIGHT"},
+		}},
+		{[]string{"GREAT", "HEXAGRAM"}, []CharName{
+			{'\u4DCD', "HEXAGRAM FOR GREAT POSSESSION"},
+			{'\u4DD9', "HEXAGRAM FOR GREAT TAMING"},
+			{'\u4DDB', "HEXAGRAM FOR GREAT PREPONDERANCE"},
+			{'\u4DE1', "HEXAGRAM FOR GREAT POWER"},
+		}},
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {

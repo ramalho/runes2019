@@ -39,12 +39,24 @@ func contains(haystack []string, needle string) bool {
 	return false
 }
 
+func containsAll(haystack, needles []string) bool {
+	for _, s := range(needles) {
+		if ! contains(haystack, s) {
+			return false
+		}
+	}
+	return true
+}
+
 func filter(iterator <-chan CharName, query []string) <-chan CharName {
+	for i, s := range query {
+		query[i] = strings.ToUpper(s)
+	}
 	output := make(chan CharName)
 	go func() {
 		for cn := range iterator {
 			name := strings.Fields(cn.Name)
-			if contains(name, strings.ToUpper(query[0])) {
+			if containsAll(name, query) {
 				output <- cn
 			}
 		}
