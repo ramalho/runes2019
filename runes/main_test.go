@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+	"github.com/stretchr/testify/assert"
+)
 
 func Example() {
 	main()
@@ -18,14 +22,35 @@ func Example_report() {
 func Test_scan_just_space(t *testing.T) {
 	expected := CharName{'\u0020', "SPACE"}
 	count := 0
-	char := CharName{}
-	for char = range scan('\u0020', '\u0021') {
+	cn := CharName{}
+	for cn = range scan('\u0020', '\u0021') {
 		count++
 	}
-	if char != expected {
-		t.Errorf("expected %q, got %q", expected, char)
+	if cn != expected {
+		t.Errorf("expected %q, got %q", expected, cn)
 	}
 	if count != 1 {
 		t.Errorf("expected count = 1, got %d", count)
 	}
+}
+
+func Test_scan(t *testing.T) {
+	testCases := []struct {
+		start rune
+		end rune
+		expected []CharName
+	}{
+		{'\x19', '\x21', []CharName{{' ', "SPACE"}}},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%x:%x", tc.start, tc.end), func(t *testing.T) {
+			actual := []CharName{}
+			cn := CharName{}
+			for cn = range scan(tc.start, tc.end) {
+				actual = append(actual, cn)
+			}
+			assert.Equal(t, tc.expected, actual)
+		})
+	}
+
 }
