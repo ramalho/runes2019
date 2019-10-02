@@ -55,7 +55,17 @@ U+2117	℗	SOUND RECORDING COPYRIGHT
 
 Character with "COPY" as whole word:
 
-
 ```
 U+32A2	㊢	CIRCLED IDEOGRAPH COPY
 ```
+
+Characters with words "PLUS" and "MINUS" hyphenated:
+
+```
+U+00B1	±	PLUS-MINUS SIGN
+U+2213	∓	MINUS-OR-PLUS SIGN
+```
+
+## Tips
+
+* Use `$ go test -run XYZ` to run a single test with regex XYZ

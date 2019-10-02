@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
 	"golang.org/x/text/unicode/runenames"
 )
 
@@ -19,7 +20,7 @@ func (cn CharName) display() string {
 func scan(start, end rune) <-chan CharName {
 	output := make(chan CharName)
 	go func() {
-		for char := start; char < end; char ++ {
+		for char := start; char < end; char++ {
 			name := runenames.Name(char)
 			if len(name) > 0 && name[0] != '<' {
 				output <- CharName{char, name}
@@ -31,7 +32,7 @@ func scan(start, end rune) <-chan CharName {
 }
 
 func contains(haystack []string, needle string) bool {
-	for _, s := range(haystack) {
+	for _, s := range haystack {
 		if s == needle {
 			return true
 		}
@@ -40,29 +41,34 @@ func contains(haystack []string, needle string) bool {
 }
 
 func containsAll(haystack, needles []string) bool {
-	for _, s := range(needles) {
-		if ! contains(haystack, s) {
+	for _, s := range needles {
+		if !contains(haystack, s) {
 			return false
 		}
 	}
 	return true
 }
 
-func filter(iterator <-chan CharName, query []string) <-chan CharName {
-	for i, s := range query {
-		query[i] = strings.ToUpper(s)
+func tokenize(text string) []string {
+	f := func(c rune) bool {
+		return c == ' ' || c == '-'
 	}
+	return strings.FieldsFunc(strings.ToUpper(text), f)
+}
+
+func filter(iterator <-chan CharName, query []string) <-chan CharName {
+	query = tokenize(strings.Join(query, " "))
 	output := make(chan CharName)
 	go func() {
 		for cn := range iterator {
-			name := strings.Fields(cn.Name)
+			name := tokenize(cn.Name)
 			if containsAll(name, query) {
 				output <- cn
 			}
 		}
 		close(output)
 	}()
-	return output	
+	return output
 }
 
 func report(words ...string) {

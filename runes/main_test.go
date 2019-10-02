@@ -39,8 +39,8 @@ func Test_scan_just_space(t *testing.T) {
 
 func Test_scan(t *testing.T) {
 	testCases := []struct {
-		start rune
-		end rune
+		start    rune
+		end      rune
 		expected []CharName
 	}{
 		{'\x19', '\x21', []CharName{{' ', "SPACE"}}},
@@ -69,10 +69,10 @@ func Test_filter(t *testing.T) {
 	start := '\x00'
 	end := unicode.MaxRune
 	testCases := []struct {
-		query []string
+		query    []string
 		expected []CharName
 	}{
-		{[]string{"SCRUPLE"}, []CharName{{'\u2108', "SCRUPLE"},}},
+		{[]string{"SCRUPLE"}, []CharName{{'\u2108', "SCRUPLE"}}},
 		{[]string{"copyright"}, []CharName{
 			{'\u00A9', "COPYRIGHT SIGN"},
 			{'\u2117', "SOUND RECORDING COPYRIGHT"},
@@ -89,6 +89,10 @@ func Test_filter(t *testing.T) {
 			{'\u4DDB', "HEXAGRAM FOR GREAT PREPONDERANCE"},
 			{'\u4DE1', "HEXAGRAM FOR GREAT POWER"},
 		}},
+		{[]string{"plus", "minus"}, []CharName{
+			{'\u00B1', "PLUS-MINUS SIGN"},
+			{'\u2213', "MINUS-OR-PLUS SIGN"},
+		}},
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {
@@ -96,6 +100,23 @@ func Test_filter(t *testing.T) {
 			for cn := range filter(scan(start, end), tc.query) {
 				actual = append(actual, cn)
 			}
+			assert.Equal(t, tc.expected, actual)
+		})
+	}
+}
+
+func Test_tokenize(t *testing.T) {
+	testCases := []struct {
+		given    string
+		expected []string
+	}{
+		{"banana", []string{"BANANA"}},
+		{"f1 car", []string{"F1", "CAR"}},
+		{"forty-two", []string{"FORTY", "TWO"}},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.given, func(t *testing.T) {
+			actual := tokenize(tc.given)
 			assert.Equal(t, tc.expected, actual)
 		})
 	}
