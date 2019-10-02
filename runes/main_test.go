@@ -77,6 +77,9 @@ func Test_filter(t *testing.T) {
 			{'\u00A9', "COPYRIGHT SIGN"},
 			{'\u2117', "SOUND RECORDING COPYRIGHT"},
 		}},
+		{[]string{"copy"}, []CharName{
+			{'\u32A2', "CIRCLED IDEOGRAPH COPY"},
+		}},
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {

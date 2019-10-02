@@ -30,11 +30,21 @@ func scan(start, end rune) <-chan CharName {
 	return output
 }
 
+func contains(haystack []string, needle string) bool {
+	for _, s := range(haystack) {
+		if s == needle {
+			return true
+		}
+	}
+	return false
+}
+
 func filter(iterator <-chan CharName, query []string) <-chan CharName {
 	output := make(chan CharName)
 	go func() {
 		for cn := range iterator {
-			if strings.Contains(cn.Name, strings.ToUpper(query[0])) {
+			name := strings.Fields(cn.Name)
+			if contains(name, strings.ToUpper(query[0])) {
 				output <- cn
 			}
 		}

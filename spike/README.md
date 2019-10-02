@@ -52,3 +52,10 @@ Character with word ocurring only twice in the database:
 U+00A9	©	COPYRIGHT SIGN
 U+2117	℗	SOUND RECORDING COPYRIGHT
 ```
+
+Character with "COPY" as whole word:
+
+
+```
+U+32A2	㊢	CIRCLED IDEOGRAPH COPY
+```
