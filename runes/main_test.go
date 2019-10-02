@@ -61,5 +61,4 @@ func Test_scan(t *testing.T) {
 			assert.Equal(t, tc.expected, actual)
 		})
 	}
-
 }
