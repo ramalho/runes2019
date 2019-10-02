@@ -94,7 +94,7 @@ func report(words ...string) {
 		count++
 	}
 	countStr, plural := quantify(count)
-	fmt.Printf("%s character%s found", countStr, plural)
+	fmt.Printf("%s character%s found\n", countStr, plural)
 }
 
 func main() {
