@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 
 	"golang.org/x/text/unicode/runenames"
 )
@@ -72,9 +73,12 @@ func filter(iterator <-chan CharName, query []string) <-chan CharName {
 }
 
 func report(words ...string) {
-	charName := CharName{'\u2108', "SCRUPLE"}
-	fmt.Printf("%s\n", charName.display())
-	count := 1
+	scanner := scan(' ', unicode.MaxRune)
+	count := 0
+	for charName := range filter(scanner, words) {
+		fmt.Printf("%s\n", charName.display())
+		count++
+	}
 	fmt.Printf("%d character found", count)
 }
 
