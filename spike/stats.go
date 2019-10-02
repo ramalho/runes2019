@@ -17,10 +17,14 @@ func main() {
 	fmt.Println("unicode.MaxRune = ", unicode.MaxRune)
 	fmt.Println("runenames.UnicodeVersion = ", runenames.UnicodeVersion)
 	firstNamed, lastNamed := rune(-1), unicode.MaxRune
+	firstUnnamed := rune(-1)
 	uniqueCount := 0
 	for char := first; char <= last; char++ {
 		name := runenames.Name(char)
 		if len(name) == 0 {
+			if firstUnnamed == rune(-1) {
+				firstUnnamed = char
+			}
 			continue
 		}
 		rangeCounts[name]++
@@ -49,10 +53,13 @@ func main() {
 	fmt.Printf("%6d\tcharacters with unique names\n", uniqueCount)
 	fmt.Printf("first:\t%U\t%q\t%s\n", firstNamed, firstNamed, runenames.Name(firstNamed))
 	fmt.Printf(" last:\t%U\t%q\t%s\n", lastNamed, lastNamed, runenames.Name(lastNamed))
-	fmt.Println("Single word character names < U+2FFF:")
-	for _, char := range singleWordChars {
-		if char < 0x2FFF {
-			fmt.Printf("%U\t%c\t%s\n", char, char, runenames.Name(char))
+	fmt.Printf("first character with no name: \t%U\n", firstUnnamed)
+	/*
+		fmt.Println("Single word character names < U+2FFF:")
+		for _, char := range singleWordChars {
+			if char < 0x2FFF {
+				fmt.Printf("%U\t%c\t%s\n", char, char, runenames.Name(char))
+			}
 		}
-	}
+	*/
 }

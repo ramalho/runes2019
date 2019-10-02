@@ -41,6 +41,15 @@ func Test_scan(t *testing.T) {
 		expected []CharName
 	}{
 		{'\x19', '\x21', []CharName{{' ', "SPACE"}}},
+		{'0', '3', []CharName{
+			{'0', "DIGIT ZERO"},
+			{'1', "DIGIT ONE"},
+			{'2', "DIGIT TWO"},
+		}},
+		{'\U000E01EE', '\U000F0000', []CharName{
+			{'\U000E01EE', "VARIATION SELECTOR-255"},
+			{'\U000E01EF', "VARIATION SELECTOR-256"},
+		}},
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%x:%x", tc.start, tc.end), func(t *testing.T) {

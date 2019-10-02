@@ -20,7 +20,7 @@ func scan(start, end rune) <-chan CharName {
 	go func() {
 		for char := start; char < end; char ++ {
 			name := runenames.Name(char)
-			if name[0] != '<' {
+			if len(name) > 0 && name[0] != '<' {
 				ch <- CharName{char, name}
 			}
 		}
