@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"golang.org/x/text/unicode/runenames"
 )
 
@@ -16,17 +17,30 @@ func (cn CharName) display() string {
 }
 
 func scan(start, end rune) <-chan CharName {
-	ch := make(chan CharName)
+	output := make(chan CharName)
 	go func() {
 		for char := start; char < end; char ++ {
 			name := runenames.Name(char)
 			if len(name) > 0 && name[0] != '<' {
-				ch <- CharName{char, name}
+				output <- CharName{char, name}
 			}
 		}
-		close(ch)
+		close(output)
 	}()
-	return ch
+	return output
+}
+
+func filter(iterator <-chan CharName, query []string) <-chan CharName {
+	output := make(chan CharName)
+	go func() {
+		for cn := range iterator {
+			if strings.Contains(cn.Name, query[0]) {
+				output <- cn
+			}
+		}
+		close(output)
+	}()
+	return output	
 }
 
 func report(words ...string) {

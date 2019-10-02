@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"testing"
+	"unicode"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -54,8 +57,27 @@ func Test_scan(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%x:%x", tc.start, tc.end), func(t *testing.T) {
 			actual := []CharName{}
-			cn := CharName{}
-			for cn = range scan(tc.start, tc.end) {
+			for cn := range scan(tc.start, tc.end) {
+				actual = append(actual, cn)
+			}
+			assert.Equal(t, tc.expected, actual)
+		})
+	}
+}
+
+func Test_filter(t *testing.T) {
+	start := '\x00'
+	end := unicode.MaxRune
+	testCases := []struct {
+		query []string
+		expected []CharName
+	}{
+		{[]string{"SCRUPLE"}, []CharName{{'\u2108', "SCRUPLE"},}},
+	}
+	for _, tc := range testCases {
+		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {
+			actual := []CharName{}
+			for cn := range filter(scan(start, end), tc.query) {
 				actual = append(actual, cn)
 			}
 			assert.Equal(t, tc.expected, actual)
