@@ -1,0 +1,123 @@
+Introduction to TDD
+With examples in Go
+2 Oct 2019
+Tags: golang, tdd, testing, unicode
+
+Luciano Ramalho
+Principal Consutant, ThoughtWorks
+luciano.ramalho@thoughtworks.com
+https://standupdev.com/
+@ramalhoorg
+
+* Workshop idea
+
+- Make the most of our time together
+- Lots of live coding, together
+- Simple yet complete app built from tests
+- Discuss TDD styles and variations
+- Brief overview of tools and libraries
+- References for further study
+
+* Required assets
+
+- Go 1.12 or 1.13 ([[https://golang.org/dl/][download]])
+- Go `present` tool:
+   $ go install golang.org/x/tools/cmd/present
+- Package [[https://godoc.org/github.com/stretchr/testify/assert][testify/assert]]:
+   $ go get github.com/stretchr/testify/assert
+- Tutorial [[https://github.com/standupdev/runes201][repo]]:
+   $ git clone --depth 1 https://github.com/standupdev/runes2019.git
+
+*Note*: you can see these slides on your machine if you run the `present` command in the `runes2019` directory you just cloned.
+
+  $ present
+  2019/10/02 21:41:29 Open your web browser and visit http://127.0.0.1:3999
+
+* What we will build
+
+`runes`: a CLI tool to find Unicode characters by name.
+
+    $ ./runes fire
+    U+2632	☲	TRIGRAM FOR FIRE
+    U+2EA3	⺣	CJK RADICAL FIRE
+    U+2F55	⽕	KANGXI RADICAL FIRE
+    U+322B	㈫	PARENTHESIZED IDEOGRAPH FIRE
+    U+328B	㊋	CIRCLED IDEOGRAPH FIRE
+    U+4DDD	䷝	HEXAGRAM FOR THE CLINGING FIRE
+    U+1F525	🔥	FIRE
+    U+1F692	🚒	FIRE ENGINE
+    U+1F6F1	🛱	ONCOMING FIRE ENGINE
+    U+1F702	🜂	ALCHEMICAL SYMBOL FOR FIRE
+    10 characters found
+
+
+* How `runes` works
+
+The [[https://home.unicode.org/][Unicode Consortium]] maintains the [[http://www.unicode.org/ucd/][Unicode Character Database]]. It includes the file [[https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt][UnicodeData.txt]], with the names of more than 32.000 characters. It looks like this:
+
+    0037;DIGIT SEVEN;Nd;0;EN;;7;7;7;N;;;;;
+    0038;DIGIT EIGHT;Nd;0;EN;;8;8;8;N;;;;;
+    0039;DIGIT NINE;Nd;0;EN;;9;9;9;N;;;;;
+    003A;COLON;Po;0;CS;;;;;N;;;;;
+    003B;SEMICOLON;Po;0;ON;;;;;N;;;;;
+    003C;LESS-THAN SIGN;Sm;0;ON;;;;;Y;;;;;
+    003D;EQUALS SIGN;Sm;0;ON;;;;;N;;;;;
+    003E;GREATER-THAN SIGN;Sm;0;ON;;;;;Y;;;;;
+    003F;QUESTION MARK;Po;0;ON;;;;;N;;;;;
+    0040;COMMERCIAL AT;Po;0;ON;;;;;N;;;;;
+    0041;LATIN CAPITAL LETTER A;Lu;0;L;;;;;N;;;;0061;
+    0042;LATIN CAPITAL LETTER B;Lu;0;L;;;;;N;;;;0062;
+    0043;LATIN CAPITAL LETTER C;Lu;0;L;;;;;N;;;;0063;
+
+
+* Getting character names from Go
+
+The semi-official package [[https://godoc.org/golang.org/x/text/unicode/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
+
+.play -edit assets/name.go
+
+
+* Beginning TDD
+
+* First test: an example test
+
+Source: `github.com/standupdev/runes2019/step01/runes/...`
+
+.code runes/main_test.go
+
+To run, go where that file is saved. Then:
+
+    $ go test
+    # github.com/standupdev/runes2019/step01/runes [...]
+    ./main_test.go:4:2: undefined: main
+    FAIL	github.com/standupdev/runes2019/step01/runes [build failed]
+
+* First test passing
+
+.code runes/main_test.go
+
+.code runes/main.go
+
+Run the test:
+
+    $ go test
+    PASS
+    ok  	github.com/standupdev/runes2019/step01/runes	0.006s
+
+* Lab 01
+
+*1.* Create a directory named `…/go/src/runes2019-10-12/lab01`
+
+*2.* In `lab01/`, create `main_test.go` with the code shown in the previous slide.
+
+*3.* Run `go test`. Make sure the error message is what you expect.
+
+*4.* Create `main.go` with the code shown in the previous slide.
+
+*5.* Run `go test`. The test should pass.
+
+*6.* Browse these references:
+
+- [[https://blog.golang.org/examples][The Go Blog: Testable Examples in Go]]
+- *Examples* section in the [[https://golang.org/pkg/testing/#hdr-Examples][testing package documentation]]
+
