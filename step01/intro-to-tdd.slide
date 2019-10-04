@@ -1,6 +1,6 @@
-Introduction to TDD
-With examples in Go
-2 Oct 2019
+Introduction to Go and TDD
+A short workshop
+12 Oct 2019
 Tags: golang, tdd, testing, unicode
 
 Luciano Ramalho
@@ -83,7 +83,7 @@ The semi-official package [[https://godoc.org/golang.org/x/text/unicode/runename
 
 Source: `github.com/standupdev/runes2019/step01/runes/...`
 
-.code runes/main_test.go
+.code runes011/main_test.go
 
 To run, go where that file is saved. Then:
 
@@ -94,9 +94,9 @@ To run, go where that file is saved. Then:
 
 * First test passing
 
-.code runes/main_test.go
+.code runes011/main_test.go
 
-.code runes/main.go
+.code runes011/main.go
 
 Run the test:
 
@@ -104,7 +104,7 @@ Run the test:
     PASS
     ok  	github.com/standupdev/runes2019/step01/runes	0.006s
 
-* Lab 01
+* Lab 1.1
 
 *1.* Create a directory named `…/go/src/runes2019-10-12/lab01`
 
@@ -121,3 +121,87 @@ Run the test:
 - [[https://blog.golang.org/examples][The Go Blog: Testable Examples in Go]]
 - *Examples* section in the [[https://golang.org/pkg/testing/#hdr-Examples][testing package documentation]]
 
+
+* Go syntax
+
+* Basic source file structure
+
+.code runes011/main.go
+
+- Every Go source code file must start with a `pagkage` declaration; `package main` is the name conventionally used for code that implements a stand-alone program (as opposed to a library).
+
+- The second statement is usually `import`, naming libraries as simple strings or repository paths.
+
+- Functions start with `func`, followed by an identifier, an optional list of arguments in parenthesis, an optional list of return types, and the opening `{` — which must be in that same line. We'll see how to declare arguments and return types later.
+
+* Basics of types and variables
+
+Go is a statically typed language, but it implements _type_inference_.
+
+This means you can write code declaring only the types of function arguments and return values, without declaring the types of variables most of the time.
+
+When you use the `:=` operator to make the first assignment to a new variable in the source code, the Go compiler _infers_ (guesses) the type of the variable from the right-hand expression.
+
+Further assigments to the same variable in the same scope must use `=` (not `:=`), and cannot change the type of the variable.
+
+* A few types
+
+.play -edit assets/sometypes.go
+
+* The `rune` type
+
+- The character type in Go is `rune`, an alias for `int32`.
+
+- The constant literal `0x2108` is an `int`.
+
+- To code a `rune` literal using that character code you have write it as `\u2108`.
+
+- You can get a `rune` from an `int` (with 32 bits or less) with `rune(myInt)`
+
+* A few different ways to display a `rune`
+
+.play -edit assets/int2rune.go
+
+Read about _formatting_verbs_ `%T`, `%v`, `%q` etc. in the [[https://golang.org/pkg/fmt/][`fmt` package documentation]].
+
+
+* Second test
+
+    func Example_report() {
+        report("scruple")
+        // Output:
+        // U+2108	℈	SCRUPLE
+        // 1 character found
+    }
+
+The report lists characters with three fields, separated by tabs:
+
+- Character _codepoint_ as `U+` followed by 4, 5 or 6 hexadecimal digits;
+- The character;
+- Name of the character, all uppercase.
+
+Last line of the report shows count of characters found, or "no character found".
+
+*NOTE:* The word "scruple" appears only once in the Unicode Character Database; it's an old weight measurement ≅ 1.3g.
+
+* Lab 1.2
+
+*1.* Add the `Example_report` test to `main_test.go`.
+
+*2.* Run `go test`. Is the error message what you expected?
+
+*3.* Edit `main.go` to make the test pass. Don't implement any logic or formatting yet; just hard-code the printed string to make the test pass.
+
+*4.* Edit the `report` function creating three variables: `char`, `name`, `count` with suitable values. Use `fmt.Printf` to build each line of the report to make the test pass.
+
+*Tips*
+
+- The new function will have the signature below (we will change that later):
+
+  func report(word string) {
+
+- Use the `runenames.Name(char)` function get the name of the `rune`. Recall the different ways to show a rune we saw before.
+
+* Lab 1.2 solution
+
+.code runes012/main.go
