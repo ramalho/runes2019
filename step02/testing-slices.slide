@@ -42,11 +42,43 @@ The values produced by `scan` will be structs (records) of this type:
 
 *NOTE*: public field names must start with an uppercase letter.
 
+* Lab 2.1: A printable struct
+
+*1.* Add this struct declaration to `runes/main.go`:
+
+    type CharName struct {
+        Char rune
+        Name string
+    }
+
+*2.* Add this test to `runes/main_test.go`:
+
+    func Test_CharName_String(t *testing.T) {
+        want := "U+0041\tA\tLATIN CAPITAL LETTER A"
+        cn := CharName{'A', "LATIN CAPITAL LETTER A"}
+        got := fmt.Sprint(cn)
+        assert.Equal(t, want, got)
+    }
+
+(lab continues...)
+
+* Lab 2.1: A printable struct (continued)
+
+*3.* To pass the test in the previous slide, you need to add a `String` method after the `CharName` struct in `main.go`. The method should have the signature shown below. Use a `fmt.Sprintf` call to build the string, similar to the `fmt.Printf` call already present in the `report` function.
+
+    func (cn CharName) String() string {
+        // return a string like this: U+XXXX<tab>Y<tab>NAME OF CHARACTER Y
+    }
+
+*NOTE*: In contrast with functions, method signatures declare the target object in parenthesis right after the `func` keyword. In the example above, `cn` plays the role of the special variables `this` or `self` in other languages.
+
+
+
 * Iterators in Go
 
 As of 2019, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two common patterns we use to work around this limitation:
 
-- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code consumes the iterator like this:
+- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code uses the iterator like this:
 
     iterator := MyIterator(iterable)
     for iterator.Advance() {
@@ -54,11 +86,14 @@ As of 2019, Go does not provide a way to implement user-defined iterators suppor
         doSomethingWith(value)
     }
 
-- Implement a function that returns a channel after spawning a coroutine to send items one by one through the channel. Client code can read the channel using `for` `…` `range`. This implementation is much simpler, and client code is easier to read. However, there is a context switching cost when running a coroutine, and the coroutine may _leak_ if it does not run to completion.
+- Implement a function that spaws a coroutine to send items one by one through a channel, return that channel . Client code reads the channel using clean `for` `…` `range` syntax. This implementation is simpler. However, there is a context switch cost to run a coroutine, and the coroutine may _leak_ if it does not run to completion.
 
-* Iterators compared
+* Iterator implementations compared
 
-.image assets/iterators-compared.png 500 _
+.image assets/iterators/iterators-compared.png 500 _
+
+Source: `github.com/standupdev/runes2019/step02/assets/iterators/...`
+
 
 
 
