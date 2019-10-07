@@ -1,0 +1,70 @@
+Introduction to Go and TDD
+A short workshop
+12 Oct 2019
+Tags: golang, tdd, testing, unicode
+
+Luciano Ramalho
+Principal Consutant, ThoughtWorks
+luciano.ramalho@thoughtworks.com
+https://standupdev.com/
+@ramalhoorg
+
+* Generating named characters
+
+* Unassigned and unnamed characters
+
+Unicode has room for 1,114,111 _code_points_, from U+0000 to U+10FFFF. About 10% of those code points have characters assigned to them as of 2019.
+
+Among the assigned characters, more than 70% are CJK (Chinese/Japanese/Korean) ideographs that don't have names. For example, here is what the `runenames.Name` function says about the traditional Chinese character 氣 (qi), representing vital energy:
+
+.play -edit assets/qi.go
+
+* Ranges of characters with generic names
+
+.play -edit assets/noname.go
+
+* Scanning the UCD
+
+Given a `rune` value, `runenames.Name` returns:
+
+- an empty string, if the code point is unnassigned;
+- a string delimited by `<…>`, if the code point is part of a range of unnamed characters; 
+- a unique character name — this is what we want.
+
+We'll code `Scanner` object that will produce the code point and the name of each character that has a unique name, skipping all the others.
+
+The values produced by `scan` will be structs (records) of this type:
+
+    type CharName struct {
+        Char rune
+        Name string
+    }
+
+*NOTE*: public field names must start with an uppercase letter.
+
+* Iterators in Go
+
+As of 2019, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two common patterns we use to work around this limitation:
+
+- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code consumes the iterator like this:
+
+    iterator := MyIterator(iterable)
+    for iterator.Advance() {
+        value := iterator.Next()
+        doSomethingWith(value)
+    }
+
+- Implement a function that returns a channel after spawning a coroutine to send items one by one through the channel. Client code can read the channel using `for` `…` `range`. This implementation is much simpler, and client code is easier to read. However, there is a context switching cost when running a coroutine, and the coroutine may _leak_ if it does not run to completion.
+
+* Iterators compared
+
+.image assets/iterators-compared.png 500 _
+
+
+
+
+
+
+
+
+

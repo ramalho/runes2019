@@ -53,7 +53,11 @@ https://standupdev.com/
 
 * How `runes` works
 
-The [[https://home.unicode.org/][Unicode Consortium]] maintains the [[http://www.unicode.org/ucd/][Unicode Character Database]]. It includes the file [[https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt][UnicodeData.txt]], with the names of more than 32.000 characters. It looks like this:
+The [[https://home.unicode.org/][Unicode Consortium]] maintains the [[http://www.unicode.org/ucd/][Unicode Character Database]] (UCD).
+
+One of the files in the UCD is [[https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt][UnicodeData.txt]] — a list with names for > 32.000 characters.
+
+`UnicodeData.txt` looks like this:
 
     0037;DIGIT SEVEN;Nd;0;EN;;7;7;7;N;;;;;
     0038;DIGIT EIGHT;Nd;0;EN;;8;8;8;N;;;;;
@@ -128,25 +132,40 @@ Run the test:
 
 .code runes011/main.go
 
-- Every Go source code file must start with a `pagkage` declaration; `package main` is the name conventionally used for code that implements a stand-alone program (as opposed to a library).
+- Every Go source file must start with a `package` declaration; `package` `main` is conventionally used for a stand-alone program (as opposed to a library).
 
-- The second statement is usually `import`, naming libraries as simple strings or repository paths.
+- Next is usually `import`, naming libraries as simple strings or repository paths.
 
-- Functions start with `func`, followed by an identifier, an optional list of arguments in parenthesis, an optional list of return types, and the opening `{` — which must be in that same line. We'll see how to declare arguments and return types later.
+- Functions start with `func`, followed by an identifier, an optional list of arguments in parenthesis, and an optional list of return types. The opening `{` must be in that same line. Soon we'll see how to declare arguments and return types.
 
-* Basics of types and variables
+* Short variable declarations
 
-Go is a statically typed language, but it implements _type_inference_.
+Go is a statically typed language, but it implements a simple form of _type_inference_. This avoids repetitive declarations such as this example from a ficticious language:
 
-This means you can write code declaring only the types of function arguments and return values, without declaring the types of variables most of the time.
+    EnterpriseSingletonFactoryFactory e = new EnterpriseSingletonFactoryFactory();
 
-When you use the `:=` operator to make the first assignment to a new variable in the source code, the Go compiler _infers_ (guesses) the type of the variable from the right-hand expression.
+To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_. 
+
+    func main() {
+        n := 20                // int is the default type of integer literals
+        result := Factorial(n) // result will match the return type of Factorial
+        fmt.Println("Largest factorial that fits an int:")
+        fmt.Printf("\t%d! = %d\n", n, result)
+    }
+
+The compiler _infers_ (guesses) the type of the variable from the right-hand expression. 
 
 Further assigments to the same variable in the same scope must use `=` (not `:=`), and cannot change the type of the variable.
 
-* A few types
+* Default types of constant literals
 
-.play -edit assets/sometypes.go
+.play -edit assets/defaultypes.go
+
+* Zero value of flat types
+
+I call types that are not pointers and have no embedded pointers _flat_types_.
+
+.play -edit assets/zerovalues.go
 
 * The `rune` type
 
@@ -182,7 +201,7 @@ The report lists characters with three fields, separated by tabs:
 
 Last line of the report shows count of characters found, or "no character found".
 
-*NOTE:* The word "scruple" appears only once in the Unicode Character Database; it's an old weight measurement ≅ 1.3g.
+*NOTE:* The word "scruple" appears only once in `UnicodeData.txt`. Scruple is an old weight measurement ≅ 1.3g.
 
 * Lab 1.2
 
