@@ -31,75 +31,37 @@ Given a `rune` value, `runenames.Name` returns:
 - a string delimited by `<…>`, if the code point is part of a range of unnamed characters; 
 - a unique character name — this is what we want.
 
-We'll code `Scanner` object that will produce the code point and the name of each character that has a unique name, skipping all the others.
+We'll code a `scan` function to return a slice of `CharName` structs for characters that have a unique name, skipping all the others.
 
-The values produced by `scan` will be structs (records) of this type:
+To make testing easier, `scan` will take two integer arguments setting the start and end of the range of code points to be scanned. The end code point will be excluded. For example, this call will return a slice with `CharName` structs for the letters 'A', 'B', 'C':
 
-    type CharName struct {
-        Char rune
-        Name string
+    abc := scan(65, 68)
+
+* Baby step 1: return slice with one `CharName`
+
+Our first test of `scan` verifies that `scan(65, 66)` returns a slice with one element, the `CharName` for the letter 'A':
+
+.code -numbers runes021/main_test.go /^func Test_scan_A/,/^}/
+
+Note the syntax for literal struct and slice of structs:
+
+    CharName{'A', "LATIN CAPITAL LETTER A"}  // a simple struct value
+
+    []CharName{CharName{'A', "LATIN CAPITAL LETTER A"}}  // a slice with one struct item
+
+    []CharName{{'A', "LATIN CAPITAL LETTER A"}}  // short syntax for slice with struct item(s)
+
+* Baby step 1: satisfy previous test
+
+At first: satisfy what is tested, and only what is tested.
+
+    func scan(start, end int) []CharName {
+        return []CharName{{'A', "LATIN CAPITAL LETTER A"}}
     }
 
-*NOTE*: public field names must start with an uppercase letter.
+Yes: returning a hard-coded literal is often a good first step.
 
-* Lab 2.1: A printable struct
+.code runes021/main.go /^func scan/,/^}/
 
-*1.* Add this struct declaration to `runes/main.go`:
-
-    type CharName struct {
-        Char rune
-        Name string
-    }
-
-*2.* Add this test to `runes/main_test.go`:
-
-    func Test_CharName_String(t *testing.T) {
-        want := "U+0041\tA\tLATIN CAPITAL LETTER A"
-        cn := CharName{'A', "LATIN CAPITAL LETTER A"}
-        got := fmt.Sprint(cn)
-        assert.Equal(t, want, got)
-    }
-
-(lab continues...)
-
-* Lab 2.1: A printable struct (continued)
-
-*3.* To pass the test in the previous slide, you need to add a `String` method after the `CharName` struct in `main.go`. The method should have the signature shown below. Use a `fmt.Sprintf` call to build the string, similar to the `fmt.Printf` call already present in the `report` function.
-
-    func (cn CharName) String() string {
-        // return a string like this: U+XXXX<tab>Y<tab>NAME OF CHARACTER Y
-    }
-
-*NOTE*: In contrast with functions, method signatures declare the target object in parenthesis right after the `func` keyword. In the example above, `cn` plays the role of the special variables `this` or `self` in other languages.
-
-
-
-* Iterators in Go
-
-As of 2019, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two common patterns we use to work around this limitation:
-
-- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code uses the iterator like this:
-
-    iterator := MyIterator(iterable)
-    for iterator.Advance() {
-        value := iterator.Next()
-        doSomethingWith(value)
-    }
-
-- Implement a function that spaws a coroutine to send items one by one through a channel, return that channel . Client code reads the channel using clean `for` `…` `range` syntax. This implementation is simpler. However, there is a context switch cost to run a coroutine, and the coroutine may _leak_ if it does not run to completion.
-
-* Iterator implementations compared
-
-.image assets/iterators/iterators-compared.png 500 _
-
-Source: `github.com/standupdev/runes2019/step02/assets/iterators/...`
-
-
-
-
-
-
-
-
-
+* Baby step 2: return slice with three `CharName`
 

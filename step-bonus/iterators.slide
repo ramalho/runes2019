@@ -1,0 +1,46 @@
+Introduction to Go and TDD
+A short workshop
+12 Oct 2019
+Tags: golang, tdd, testing, unicode
+
+Luciano Ramalho
+Principal Consutant, ThoughtWorks
+luciano.ramalho@thoughtworks.com
+https://standupdev.com/
+@ramalhoorg
+
+* Iterators in Go
+
+As of 2019, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two recipes to work around this limitation:
+
+- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code uses the iterator like this:
+
+    iterator := MyIterator(iterable)
+    for iterator.Advance() {
+        value := iterator.Next()
+        doSomethingWith(value)
+    }
+
+- Implement a function that spawns a coroutine to send items one by one through a channel, return that channel . Client code reads the channel using clean `for` `…` `range` syntax. This implementation is simpler. However, there is a context switch cost to run a coroutine, and the coroutine may _leak_ if it does not run to completion.
+
+* Iterator implementations compared
+
+.image assets/iterators/iterators-compared.png 500 _
+
+Source: `github.com/standupdev/runes2019/step02/assets/iterators/...`
+
+* Use of a channel-based iterator
+
+Here is a test for a simple `PositiveIterator` that takes a slice of numbers and generates the positive, non-zero items in it, one by one:
+
+.code -numbers assets/iterators/channel-iter/iterator_test.go /^func Example/,/^}/
+
+* Code for a channel-based iterator
+
+.code assets/iterators/channel-iter/iterator.go
+
+
+
+
+
+

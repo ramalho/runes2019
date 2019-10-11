@@ -10,9 +10,12 @@ import (
 func Example() {
 	sample := []float64{0, 1, -2, 3, -4, 5}
 	for x := range PositiveIterator(sample) {
-		fmt.Printf("%0.1f ", x)
+		fmt.Printf("%0.1f\n", x)
 	}
-	// Output: 1.0 3.0 5.0
+	// Output:
+	// 1.0
+	// 3.0
+	// 5.0
 }
 
 func Test_scan(t *testing.T) {

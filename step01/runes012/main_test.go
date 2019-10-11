@@ -1,4 +1,3 @@
-/* step01/runes/main_test.go */
 package main
 
 func Example() {
