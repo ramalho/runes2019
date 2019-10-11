@@ -1,4 +1,3 @@
-/* step01/runes/main.go */
 package main
 
 import "fmt"

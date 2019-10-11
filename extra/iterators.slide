@@ -27,7 +27,7 @@ As of 2019, Go does not provide a way to implement user-defined iterators suppor
 
 .image assets/iterators/iterators-compared.png 500 _
 
-Source: `github.com/standupdev/runes2019/step02/assets/iterators/...`
+Source: `github.com/standupdev/runes2019/extra/assets/iterators/...`
 
 * Use of a channel-based iterator
 

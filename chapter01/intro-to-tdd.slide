@@ -14,9 +14,7 @@ https://standupdev.com/
 - Make the most of our time together
 - Lots of live coding, together
 - Simple yet complete app built from tests
-- Discuss TDD styles and variations
 - Brief overview of tools and libraries
-- References for further study
 
 * Required assets
 
@@ -85,16 +83,16 @@ The semi-official package [[https://godoc.org/golang.org/x/text/unicode/runename
 
 * First test: an example test
 
-Source: `github.com/standupdev/runes2019/step01/runes/...`
+Source: `github.com/standupdev/runes2019/chapter01/runes/...`
 
 .code runes011/main_test.go
 
 To run, go where that file is saved. Then:
 
     $ go test
-    # github.com/standupdev/runes2019/step01/runes [...]
+    # github.com/standupdev/runes2019/chapter01/runes [...]
     ./main_test.go:4:2: undefined: main
-    FAIL	github.com/standupdev/runes2019/step01/runes [build failed]
+    FAIL	github.com/standupdev/runes2019/chapter01/runes [build failed]
 
 * First test passing
 
@@ -106,7 +104,7 @@ Run the test:
 
     $ go test
     PASS
-    ok  	github.com/standupdev/runes2019/step01/runes	0.006s
+    ok  	github.com/standupdev/runes2019/chapter01/runes	0.006s
 
 * Lab 1.1
 
@@ -244,7 +242,7 @@ In Go, we can represent such a pair with a struct type, declared like this:
 
 Go does not have "classes", but we can attach methods to types, which then behave like classes (but without inheritance). We'll do that next.
 
-* Lab 2.1: A printable struct, part 1/3
+* Lab 1.3: A printable struct, part 1/3
 
 *1.* Add this struct declaration to `runes/main.go`:
 
@@ -265,7 +263,7 @@ The `testing` package from the Go standard library supports testing for correctn
 
 (lab continues...)
 
-* Lab 2.1: A printable struct, part 2/3
+* Lab 1.3: A printable struct, part 2/3
 
 *3.* Add this test to `runes/main_test.go`:
 
@@ -280,7 +278,7 @@ The `testing` package from the Go standard library supports testing for correctn
 (lab continues...)
 
 
-* Lab 2.1: A printable struct, part 3/3
+* Lab 1.3: A printable struct, part 3/3
 
 *3.* To pass the test in the previous slide, add a `String` method after the `CharName` struct in `main.go`. The method should have the signature shown below. Use a `fmt.Sprintf` call to build the string, similar to the `fmt.Printf` call already present in the `report` function.
 
@@ -294,4 +292,4 @@ In the example above, `cn` plays the role of the special variable `this` in Java
 
 *4.* Check that the test passes.
 
-* End of chapter 1
+* End of chapter 1 🎉

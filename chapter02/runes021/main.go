@@ -1,4 +1,3 @@
-/* step01/runes/main.go */
 package main
 
 import (
@@ -6,6 +5,19 @@ import (
 
 	"golang.org/x/text/unicode/runenames"
 )
+
+type CharName struct {
+	Char rune
+	Name string
+}
+
+func (c CharName) String() string {
+	return fmt.Sprintf("%U\t%c\t%s", c.Char, c.Char, c.Name)
+}
+
+func scan(start, end int) []CharName {
+	return []CharName{{'A', "LATIN CAPITAL LETTER A"}}
+}
 
 func report(word string) {
 	char := '\u2108'

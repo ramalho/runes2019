@@ -61,7 +61,8 @@ At first: satisfy what is tested, and only what is tested.
 
 Yes: returning a hard-coded literal is often a good first step.
 
-.code runes021/main.go /^func scan/,/^}/
-
 * Baby step 2: return slice with three `CharName`
 
+WIP
+
+* End of chapter 2 🎉🎉
