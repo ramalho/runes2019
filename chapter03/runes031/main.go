@@ -28,7 +28,13 @@ func scan(start, end rune) []CharName {
 }
 
 func filter(sample []CharName, words []string) []CharName {
-	return []CharName{}
+	result := []CharName{}
+	for _, c := range sample {
+		if words[0] == c.Name {
+			result = append(result, CharName{c.Char, c.Name})
+		}
+	}
+	return result
 }
 
 func report(word string) {
