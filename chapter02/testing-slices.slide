@@ -199,4 +199,17 @@ For example, the first 32 lines of `UnicodeData.txt` are ASCII control codes:
 
 - The safest way to check the prefix of a string is to use [[https://golang.org/pkg/strings/#HasPrefix][strings.HasPrefix]]. You'll need to import the `strings` package.
 
+* Table tests
+
+All four test functions we wrote for `scan` can be combined into a single test with four subtests using the `t.Run` method of `testing.T`.
+
+For details:
+
+- [[https://github.com/golang/go/wiki/TableDrivenTests][Go Wiki — TableDrivenTests]]
+
+* Example: table test with 6 subtests
+
+.code -numbers assets/gcd/gcd_test.go /^func TestGcd_table/,/^}/
+
+
 * End of chapter 2 🎉🎉
