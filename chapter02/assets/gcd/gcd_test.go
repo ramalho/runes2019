@@ -27,7 +27,7 @@ func TestGcd_table(t *testing.T) {
 		{42, 42, 42},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%x:%x", tc.a, tc.b), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%d:%d", tc.a, tc.b), func(t *testing.T) {
 			got := Gcd(tc.a, tc.b)
 			if got != tc.want {
 				t.Errorf("Gcd(%d, %d) = %d; want %d", tc.a, tc.b, got, tc.want)

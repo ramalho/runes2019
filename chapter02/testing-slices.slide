@@ -21,6 +21,31 @@ To make testing easier, `scan` will take two `rune` arguments setting the start 
 
     abc := scan('A', 'D')
 
+* Structure of the `runes2019` repo
+
+    runes2019
+    ├── README.md
+    ├── chapter01
+    │   ├── assets
+    │   │   ├── defaultypes.go
+    │   │   ├── fact
+    │   │   │   ├── fact.go
+    │   │   │   └── fact_test.go
+    │   │   ├── int2rune.go
+    │   │   ├── name.go
+    │   │   └── zerovalues.go
+    │   ├── intro-to-tdd.slide
+    │   ├── runes011
+    │   │   ├── main.go
+    │   │   └── main_test.go
+    │   ├── runes012
+    │   │   ├── main.go
+    │   │   └── main_test.go
+    │   └── runes013
+    │       ├── main.go
+    │       └── main_test.go
+    ⋮    
+
 * Baby step 1: return slice with one `CharName`
 
 .code -numbers runes021/main_test.go /^func Test_scan_A/,/^}/
@@ -216,11 +241,5 @@ For details:
 The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in [[https://github.com/standupdev/runes2019/blob/master/chapter02/runes025/main_test.go#L30][chapter02/runes025/main_test.go]]
 
 .code -numbers runes025/main_test.go /^func Test_scan/,/^}/
-
-* Handling whole words
-
-* A problematic test
-
-
 
 * End of chapter 2 🎉🎉

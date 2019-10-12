@@ -19,17 +19,18 @@ https://standupdev.com/
 * Required assets
 
 - Wi-fi: *twguest* password: *heroic* *crab* *mammal* *dual* *swig*
+- Workshop [[https://github.com/standupdev/runes2019][repo]]:
+   $ git clone --depth 1 https://github.com/standupdev/runes2019.git
 - Go 1.12 or 1.13 ([[https://golang.org/dl/][download]])
 - Package [[https://godoc.org/github.com/stretchr/testify/assert][testify/assert]]:
    $ go get github.com/stretchr/testify/assert
-- Workshop [[https://github.com/standupdev/runes201][repo]]:
-   $ git clone --depth 1 https://github.com/standupdev/runes2019.git
 - Optional: Go `present` tool:
+   $ go get golang.org/x/tools/cmd/present
    $ go install golang.org/x/tools/cmd/present
 
 To see these slides on your machine, go to `runes2019` and type:
 
-   $ present
+   $ present # or: ~/go/bin/present
    2019/10/02 21:41:29 Open your web browser and visit http://127.0.0.1:3999
 
 * What we will build
@@ -84,7 +85,7 @@ The semi-official package [[https://godoc.org/golang.org/x/text/unicode/runename
 
 * First test: an example test
 
-Source: `github.com/standupdev/runes2019/chapter01/runes/...`
+Source: `github.com/standupdev/runes2019/chapter01/runes011/...`
 
 .code runes011/main_test.go
 
