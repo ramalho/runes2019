@@ -4,7 +4,7 @@ Chapter 1
 Tags: golang, tdd, testing, unicode
 
 Luciano Ramalho
-Principal Consutant, ThoughtWorks
+Principal Consultant, ThoughtWorks
 luciano.ramalho@thoughtworks.com
 https://standupdev.com/
 @ramalhoorg
@@ -143,7 +143,7 @@ Go is a statically typed language, but it implements a simple form of _type_infe
 
     EnterpriseSingletonFactoryFactory e = new EnterpriseSingletonFactoryFactory();
 
-To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_. 
+To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_.
 
     func main() {
         n := 20                // int is the default type of integer literals
@@ -152,7 +152,7 @@ To leverage type inference, use the `:=` operator to make the first assignment t
         fmt.Printf("\t%d! = %d\n", n, result)
     }
 
-The compiler _infers_ (guesses) the type of the variable from the right-hand expression. 
+The compiler _infers_ (guesses) the type of the variable from the right-hand expression.
 
 Further assigments to the same variable in the same scope must use `=` (not `:=`), and cannot change the type of the variable.
 
