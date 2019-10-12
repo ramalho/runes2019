@@ -1,5 +1,5 @@
 Introduction to Go and TDD
-A short workshop
+Chapter 1
 12 Oct 2019
 Tags: golang, tdd, testing, unicode
 
@@ -18,18 +18,19 @@ https://standupdev.com/
 
 * Required assets
 
+- Wi-fi: *twguest* password: *heroic* *crab* *mammal* *dual* *swig*
 - Go 1.12 or 1.13 ([[https://golang.org/dl/][download]])
-- Go `present` tool:
-   $ go install golang.org/x/tools/cmd/present
 - Package [[https://godoc.org/github.com/stretchr/testify/assert][testify/assert]]:
    $ go get github.com/stretchr/testify/assert
-- Tutorial [[https://github.com/standupdev/runes201][repo]]:
+- Workshop [[https://github.com/standupdev/runes201][repo]]:
    $ git clone --depth 1 https://github.com/standupdev/runes2019.git
+- Optional: Go `present` tool:
+   $ go install golang.org/x/tools/cmd/present
 
-*Note*: you can see these slides on your machine if you run the `present` command in the `runes2019` directory you just cloned.
+To see these slides on your machine, go to `runes2019` and type:
 
-  $ present
-  2019/10/02 21:41:29 Open your web browser and visit http://127.0.0.1:3999
+   $ present
+   2019/10/02 21:41:29 Open your web browser and visit http://127.0.0.1:3999
 
 * What we will build
 

@@ -1,5 +1,5 @@
 Introduction to Go and TDD
-A short workshop
+Chapter 2
 12 Oct 2019
 Tags: golang, tdd, testing, unicode
 
@@ -216,5 +216,11 @@ For details:
 The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in [[https://github.com/standupdev/runes2019/blob/master/chapter02/runes025/main_test.go#L30][chapter02/runes025/main_test.go]]
 
 .code -numbers runes025/main_test.go /^func Test_scan/,/^}/
+
+* Handling whole words
+
+* A problematic test
+
+
 
 * End of chapter 2 🎉🎉

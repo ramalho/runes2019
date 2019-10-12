@@ -1,5 +1,5 @@
 Introduction to Go and TDD
-A short workshop
+Chapter 3
 12 Oct 2019
 Tags: golang, tdd, testing, unicode
 
@@ -25,9 +25,11 @@ Make `filter` return a hard-coded empty slice:
 
 * Baby step 2: queries with a single word
 
-Make `filter` consider only the first word passed:
+.code -numbers runes032/main_test.go /^func Test_filter/,/^}/
 
-.code -numbers runes031/main.go /^func filter/,/^}/
+* Baby step 2: consider only the first word passed:
+
+.code -numbers runes032/main.go /^func filter/,/^}/
 
 
 * End of chapter 3 🎉🎉🎉
