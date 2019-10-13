@@ -33,11 +33,11 @@ Source: `github.com/standupdev/runes2019/extra/assets/iterators/...`
 
 Here is a test for a simple `PositiveIterator` that takes a slice of numbers and generates the positive, non-zero items in it, one by one:
 
-.code -numbers assets/iterators/channel-iter/iterator_test.go /^func Example/,/^}/
+.code -numbers iterators/channel-iter/iterator_test.go /^func Example/,/^}/
 
 * Code for a channel-based iterator
 
-.code assets/iterators/channel-iter/iterator.go
+.code iterators/channel-iter/iterator.go
 
 
 

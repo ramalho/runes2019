@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
+	"unicode"
 
 	"golang.org/x/text/unicode/runenames"
 )
@@ -27,24 +29,51 @@ func scan(start, end rune) []CharName {
 	return result
 }
 
+func contains(haystack []string, needle string) bool {
+	for _, s := range haystack {
+		if s == needle {
+			return true
+		}
+	}
+	return false
+}
+
+func containsAll(haystack, needles []string) bool {
+	for _, s := range needles {
+		if !contains(haystack, s) {
+			return false
+		}
+	}
+	return true
+}
+
 func filter(sample []CharName, words []string) []CharName {
 	result := []CharName{}
+	for i, s := range words {
+		words[i] = strings.ToUpper(s)
+	}
 	for _, c := range sample {
-		if words[0] == c.Name {
+		name := strings.Replace(c.Name, "-", " ", -1)
+		parts := strings.Fields(name)
+		if containsAll(parts, words) {
 			result = append(result, CharName{c.Char, c.Name})
 		}
 	}
 	return result
 }
 
-func report(word string) {
-	char := '\u2108'
-	name := runenames.Name(char)
-	fmt.Printf("%U\t%c\t%s\n", char, char, name)
-	count := 1
-	fmt.Printf("%d character found", count)
+func report(words ...string) {
+	result := filter(scan(' ', unicode.MaxRune), words)
+	for _, c := range result {
+		fmt.Println(c)
+	}
+	fmt.Printf("%d character(s) found", len(result))
 }
 
 func main() {
-	fmt.Println("Please provide one or more words to search.")
+	if len(os.Args) > 1 {
+		report(os.Args[1:]...)
+	} else {
+		fmt.Println("Please provide one or more words to search.")
+	}
 }
