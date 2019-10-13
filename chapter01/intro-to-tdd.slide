@@ -18,7 +18,7 @@ https://standupdev.com/
 
 * Required assets
 
-- Wi-fi: *twguest* password: *heroic* *crab* *mammal* *dual* *swig*
+- Wi-fi: *twguest* password:
 - Workshop [[https://github.com/standupdev/runes2019][repo]]:
    $ git clone --depth 1 https://github.com/standupdev/runes2019.git
 - Go 1.12 or 1.13 ([[https://golang.org/dl/][download]])
