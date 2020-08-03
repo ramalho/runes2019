@@ -1,5 +1,6 @@
-# runes2019
-A new take on the runefinder example
+# Runes 2020
+
+An introduction to Go, using TDD and the `runefinder` example
 
 
 ## References
