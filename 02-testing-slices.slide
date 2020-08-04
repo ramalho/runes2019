@@ -4,7 +4,7 @@ Chapter 2
 Tags: golang, tdd, testing, unicode
 
 Luciano Ramalho
-Principal Consutant, ThoughtWorks
+Principal Consultant, ThoughtWorks
 luciano.ramalho@thoughtworks.com
 https://standupdev.com/
 @ramalhoorg
@@ -238,7 +238,8 @@ For details:
 
 * Refactoring with subtests
 
-The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in [[https://github.com/standupdev/runes2019/blob/master/chapter02/runes025/main_test.go#L30][chapter02/runes025/main_test.go]]
+The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in
+[[https://github.com/ramalho/runes2020/blob/53e8093bed56d6b97a9c16f8e7ab8122ae8c0af2/code/02/runes025/main_test.go#L30][code/02/runes025/main_test.go]]
 
 .code -numbers code/02/runes025/main_test.go /^func Test_scan/,/^}/
 
