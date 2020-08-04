@@ -1,6 +1,6 @@
 Introduction to Go and TDD
 Chapter 1
-12 Oct 2019
+03 Aug 2020
 Tags: golang, tdd, testing, unicode
 
 Luciano Ramalho
@@ -19,19 +19,19 @@ https://standupdev.com/
 * Required assets
 
 - Wi-fi: *twguest* password:
-- Workshop [[https://github.com/standupdev/runes2019][repo]]:
-   $ git clone --depth 1 https://github.com/standupdev/runes2019.git
-- Go 1.12 or 1.13 ([[https://golang.org/dl/][download]])
+- Workshop [[https://github.com/ramalho/runes2020][repo]]:
+   $ git clone --depth 1 https://github.com/ramalho/runes2020.git
+- Go 1.14 ([[https://golang.org/dl/][download]])
 - Package [[https://godoc.org/github.com/stretchr/testify/assert][testify/assert]]:
    $ go get github.com/stretchr/testify/assert
 - Optional: Go `present` tool:
    $ go get golang.org/x/tools/cmd/present
    $ go install golang.org/x/tools/cmd/present
 
-To see these slides on your machine, go to `runes2019` and type:
+To see these slides on your machine, go to `runes2020` and type:
 
    $ present # or: ~/go/bin/present
-   2019/10/02 21:41:29 Open your web browser and visit http://127.0.0.1:3999
+   2020/08/03 20:41:44 Open your web browser and visit http://127.0.0.1:3999
 
 * What we will build
 
@@ -76,37 +76,37 @@ One of the files in the UCD is [[https://www.unicode.org/Public/UCD/latest/ucd/U
 
 * Getting character names from Go
 
-The semi-official package [[https://godoc.org/golang.org/x/text/unicode/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
+The semi-official package [[https://godoc.org/golang.org/x/text/unicode/01/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
 
-.play -edit assets/name.go
+.play -edit assets/01/name.go
 
 
 * Beginning TDD
 
 * First test: an example test
 
-Source: `github.com/standupdev/runes2019/chapter01/runes011/...`
+Source: `github.com/ramalho/runes2020/chapter01/code/01/runes011/...`
 
-.code runes011/main_test.go
+.code code/01/runes011/main_test.go
 
 To run, go where that file is saved. Then:
 
     $ go test
-    # github.com/standupdev/runes2019/chapter01/runes [...]
+    # github.com/ramalho/runes2020/chapter01/runes [...]
     ./main_test.go:4:2: undefined: main
-    FAIL	github.com/standupdev/runes2019/chapter01/runes [build failed]
+    FAIL	github.com/ramalho/runes2020/chapter01/runes [build failed]
 
 * First test passing
 
-.code runes011/main_test.go
+.code code/01/runes011/main_test.go
 
-.code runes011/main.go
+.code code/01/runes011/main.go
 
 Run the test:
 
     $ go test
     PASS
-    ok  	github.com/standupdev/runes2019/chapter01/runes	0.006s
+    ok  	github.com/ramalho/runes2020/chapter01/runes	0.006s
 
 * Lab 1.1
 
@@ -130,7 +130,7 @@ Run the test:
 
 * Basic source file structure
 
-.code runes011/main.go
+.code code/01/runes011/main.go
 
 - Every Go source file must start with a `package` declaration; `package` `main` is conventionally used for a stand-alone program (as opposed to a library).
 
@@ -144,7 +144,7 @@ Go is a statically typed language, but it implements a simple form of _type_infe
 
     EnterpriseSingletonFactoryFactory e = new EnterpriseSingletonFactoryFactory();
 
-To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_. 
+To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_.
 
     func main() {
         n := 20                // int is the default type of integer literals
@@ -153,33 +153,39 @@ To leverage type inference, use the `:=` operator to make the first assignment t
         fmt.Printf("\t%d! = %d\n", n, result)
     }
 
-The compiler _infers_ (guesses) the type of the variable from the right-hand expression. 
+The compiler _infers_ (guesses) the type of the variable from the right-hand expression.
 
 Further assigments to the same variable in the same scope must use `=` (not `:=`), and cannot change the type of the variable.
 
 * Default types of constant literals
 
-.play -edit assets/defaultypes.go
+.play -edit assets/01/defaultypes.go
 
 * Zero value of flat types
 
-I call types that are not pointers and have no embedded pointers _flat_types_.
+I use _flat_types_ for types that are not pointers and have no embedded pointers.
 
-.play -edit assets/zerovalues.go
+.play -edit assets/01/zerovalues.go
 
 * The `rune` type
 
 - The character type in Go is `rune`, an alias for `int32`.
 
-- The constant literal `0x2108` is an `int`.
+- A character literal is a single Unicode character enclosed in single quotes: `'A'`.
 
-- To code a `rune` literal using that character code you have write it as `\u2108`.
+- The value of `'A'` is 65 (or 0x41) stored as an `int32`.
+
+- The value of `'€'` (Euro sign) is 0x20ac stored as an `int32`.
+
+- The constant literal 0x20ac is an `int`, not an `int32`.
+
+- To code a `rune` literal using that character code you must write it as `'\u20ac'`.
 
 - You can get a `rune` from an `int` (with 32 bits or less) with `rune(myInt)`
 
 * A few different ways to display a `rune`
 
-.play -edit assets/int2rune.go
+.play -edit assets/01/int2rune.go
 
 Read about _formatting_verbs_ `%T`, `%v`, `%q` etc. in the [[https://golang.org/pkg/fmt/][`fmt` package documentation]].
 
@@ -223,7 +229,7 @@ Last line of the report shows count of characters found, or "no character found"
 
 * Lab 1.2 solution
 
-.code runes012/main.go
+.code code/01/runes012/main.go
 
 * Creating a struct type
 
@@ -269,7 +275,7 @@ The `testing` package from the Go standard library supports testing for correctn
 
 *3.* Add this test to `runes/main_test.go`:
 
-.code -numbers runes013/main_test.go /^func Test_CharName_String/,/^}/
+.code -numbers code/01/runes013/main_test.go /^func Test_CharName_String/,/^}/
 
 - the `t` argument is a pointer to a `T` struct that provides several methods for running tests and reporting errors.
 

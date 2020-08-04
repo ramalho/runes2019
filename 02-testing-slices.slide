@@ -1,6 +1,6 @@
-Introduction to Go and TDD
+Go and TDD: testing slices
 Chapter 2
-12 Oct 2019
+03 Aug 2020
 Tags: golang, tdd, testing, unicode
 
 Luciano Ramalho
@@ -44,11 +44,11 @@ To make testing easier, `scan` will take two `rune` arguments setting the start 
     │   └── runes013
     │       ├── main.go
     │       └── main_test.go
-    ⋮    
+    ⋮
 
 * Baby step 1: return slice with one `CharName`
 
-.code -numbers runes021/main_test.go /^func Test_scan_A/,/^}/
+.code -numbers code/02/runes021/main_test.go /^func Test_scan_A/,/^}/
 
 Note the syntax for literal struct and slice of structs:
 
@@ -76,7 +76,7 @@ To test this, we need to compare slices. But `==` and `!=` only work for compari
 
 The most popular way of checking slices and other composite data in tests is using the `testify/assert` package, imported like this:
 
-.code -numbers runes022/main_test.go /^import/,/^\)/
+.code -numbers code/02/runes022/main_test.go /^import/,/^\)/
 
 To compile the project, install the `testify` package. Run this command in the shell:
 
@@ -86,7 +86,7 @@ To compile the project, install the `testify` package. Run this command in the s
 
 With `testify` installed, we can use the `assert.Equal` function:
 
-.code -numbers runes022/main_test.go /^func Test_scan_ABC/,/^}/
+.code -numbers code/02/runes022/main_test.go /^func Test_scan_ABC/,/^}/
 
 The `testify/assert` functions provide:
 
@@ -97,12 +97,12 @@ The `testify/assert` functions provide:
 
     $ go test
     --- FAIL: Test_scan_ABC (0.00s)
-        main_test.go:55: 
+        main_test.go:55:
                 Error Trace:	main_test.go:55
-                Error:      	Not equal: 
+                Error:      	Not equal:
                                 expected: []main.CharName{main.CharName{Char:65, Name:"LATIN CAPITAL LETTER A"}, main.CharName{Char:66, Name:"LATIN CAPITAL LETTER B"}, main.CharName{Char:66, Name:"LATIN CAPITAL LETTER B"}}
                                 actual  : []main.CharName{main.CharName{Char:65, Name:"LATIN CAPITAL LETTER A"}}
-                                
+
                                 Diff:
                                 --- Expected
                                 +++ Actual
@@ -121,7 +121,7 @@ The `testify/assert` functions provide:
 
 * Baby step 2: implement loop in `scan`
 
-.code -numbers runes022/main.go /^func scan/,/^}/
+.code -numbers code/02/runes022/main.go /^func scan/,/^}/
 
 The `append` function takes a slice and an element, and returns a new slice with the element appended at the end.
 
@@ -159,25 +159,25 @@ We will use this information to create a new test and change `scan` to skip unas
 
 This is a copy of the `Test_scan_ABC` test with a new name and new parameters:
 
-.code -numbers runes023/main_test.go /^func Test_scan_unassigned/,/^}/
+.code -numbers code/02/runes023/main_test.go /^func Test_scan_unassigned/,/^}/
 
 * Baby step 3: skip characters with empty names
 
-.code -numbers runes023/main.go /^func scan/,/^}/
+.code -numbers code/02/runes023/main.go /^func scan/,/^}/
 
 * Unnamed characters
 
 Among the assigned characters, more than 70% are CJK (Chinese/Japanese/Korean) ideographs that don't have names. For example, here is what the `runenames.Name` function says about the traditional Chinese character 氣 (qi), representing vital energy:
 
-.play -edit assets/qi.go
+.play -edit assets/02/qi.go
 
-* Ranges of characters with generic names
+* Listing ranges of characters with duplicate names
 
-.play -edit assets/noname.go
+.play -edit assets/02/noname.go
 
 * Detecting generic names
 
-If a character does not have a unique name in `UnicodeData.txt`, then `runenames.Name` returns a string delimited by `<…>`.
+If a character does not have a unique name in `UnicodeData.txt`, then `runenames.Name` returns a string inside `<…>`.
 
 For example, the first 32 lines of `UnicodeData.txt` are ASCII control codes:
 
@@ -234,12 +234,12 @@ For details:
 
 * Example: table test with 6 subtests
 
-.code -numbers assets/gcd/gcd_test.go /^func TestGcd_table/,/^}/
+.code -numbers assets/02/gcd/gcd_test.go /^func TestGcd_table/,/^}/
 
 * Refactoring with subtests
 
 The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in [[https://github.com/standupdev/runes2019/blob/master/chapter02/runes025/main_test.go#L30][chapter02/runes025/main_test.go]]
 
-.code -numbers runes025/main_test.go /^func Test_scan/,/^}/
+.code -numbers code/02/runes025/main_test.go /^func Test_scan/,/^}/
 
 * End of chapter 2 🎉🎉
