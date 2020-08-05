@@ -110,7 +110,7 @@ Run the test:
 
 * Lab 1.1
 
-*1.* Create a directory named `…/go/src/wtm-runes/lab01`
+*1.* Create a directory named `…/go/src/workshop-go/lab01`
 
 *2.* In `lab01/`, create `main_test.go` with the code shown in the previous slide.
 
