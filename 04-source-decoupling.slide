@@ -1,0 +1,303 @@
+Introduction to Go and TDD
+Chapter 1
+03 Aug 2020
+Tags: golang, tdd, testing, unicode
+
+Luciano Ramalho
+Principal Consultant, ThoughtWorks
+luciano.ramalho@thoughtworks.com
+https://standupdev.com/
+@ramalhoorg
+
+* Workshop idea
+
+- Make the most of our time together
+- Lots of live coding, together
+- Simple yet complete app built from tests
+- Brief overview of tools and libraries
+
+* Required assets
+
+- Wi-fi: *twguest* password:
+- Workshop [[https://github.com/ramalho/runes2020][repo]]:
+   $ git clone --depth 1 https://github.com/ramalho/runes2020.git
+- Go 1.14 ([[https://golang.org/dl/][download]])
+- Package [[https://godoc.org/github.com/stretchr/testify/assert][testify/assert]]:
+   $ go get github.com/stretchr/testify/assert
+- Optional: Go `present` tool:
+   $ go get golang.org/x/tools/cmd/present
+   $ go install golang.org/x/tools/cmd/present
+
+To see these slides on your machine, go to `runes2020` and type:
+
+   $ present # or: ~/go/bin/present
+   2020/08/03 20:41:44 Open your web browser and visit http://127.0.0.1:3999
+
+* What we will build
+
+`runes`: a CLI tool to find Unicode characters by name.
+
+    $ ./runes fire
+    U+2632	☲	TRIGRAM FOR FIRE
+    U+2EA3	⺣	CJK RADICAL FIRE
+    U+2F55	⽕	KANGXI RADICAL FIRE
+    U+322B	㈫	PARENTHESIZED IDEOGRAPH FIRE
+    U+328B	㊋	CIRCLED IDEOGRAPH FIRE
+    U+4DDD	䷝	HEXAGRAM FOR THE CLINGING FIRE
+    U+1F525	🔥	FIRE
+    U+1F692	🚒	FIRE ENGINE
+    U+1F6F1	🛱	ONCOMING FIRE ENGINE
+    U+1F702	🜂	ALCHEMICAL SYMBOL FOR FIRE
+    10 characters found
+
+
+* How `runes` works
+
+The [[https://home.unicode.org/][Unicode Consortium]] maintains the [[http://www.unicode.org/ucd/][Unicode Character Database]] (UCD).
+
+One of the files in the UCD is [[https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt][UnicodeData.txt]] — a list with names for > 32.000 characters.
+
+`UnicodeData.txt` looks like this:
+
+    0037;DIGIT SEVEN;Nd;0;EN;;7;7;7;N;;;;;
+    0038;DIGIT EIGHT;Nd;0;EN;;8;8;8;N;;;;;
+    0039;DIGIT NINE;Nd;0;EN;;9;9;9;N;;;;;
+    003A;COLON;Po;0;CS;;;;;N;;;;;
+    003B;SEMICOLON;Po;0;ON;;;;;N;;;;;
+    003C;LESS-THAN SIGN;Sm;0;ON;;;;;Y;;;;;
+    003D;EQUALS SIGN;Sm;0;ON;;;;;N;;;;;
+    003E;GREATER-THAN SIGN;Sm;0;ON;;;;;Y;;;;;
+    003F;QUESTION MARK;Po;0;ON;;;;;N;;;;;
+    0040;COMMERCIAL AT;Po;0;ON;;;;;N;;;;;
+    0041;LATIN CAPITAL LETTER A;Lu;0;L;;;;;N;;;;0061;
+    0042;LATIN CAPITAL LETTER B;Lu;0;L;;;;;N;;;;0062;
+    0043;LATIN CAPITAL LETTER C;Lu;0;L;;;;;N;;;;0063;
+
+
+* Getting character names from Go
+
+The semi-official package [[https://godoc.org/golang.org/x/text/unicode/01/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
+
+.play -edit assets/01/name.go
+
+
+* Beginning TDD
+
+* First test: an example test
+
+Source: `github.com/ramalho/runes2020/chapter01/code/01/runes011/...`
+
+.code code/01/runes011/main_test.go
+
+To run, go where that file is saved. Then:
+
+    $ go test
+    # github.com/ramalho/runes2020/chapter01/runes [...]
+    ./main_test.go:4:2: undefined: main
+    FAIL	github.com/ramalho/runes2020/chapter01/runes [build failed]
+
+* First test passing
+
+.code code/01/runes011/main_test.go
+
+.code code/01/runes011/main.go
+
+Run the test:
+
+    $ go test
+    PASS
+    ok  	github.com/ramalho/runes2020/chapter01/runes	0.006s
+
+* Lab 1.1
+
+*1.* Create a directory named `…/go/src/wtm-runes/lab01`
+
+*2.* In `lab01/`, create `main_test.go` with the code shown in the previous slide.
+
+*3.* Run `go test`. Make sure the error message is what you expect.
+
+*4.* Create `main.go` with the code shown in the previous slide.
+
+*5.* Run `go test`. The test should pass.
+
+*6.* Browse these references:
+
+- [[https://blog.golang.org/examples][The Go Blog: Testable Examples in Go]]
+- *Examples* section in the [[https://golang.org/pkg/testing/#hdr-Examples][testing package documentation]]
+
+
+* Go syntax
+
+* Basic source file structure
+
+.code code/01/runes011/main.go
+
+- Every Go source file must start with a `package` declaration; `package` `main` is conventionally used for a stand-alone program (as opposed to a library).
+
+- Next is usually `import`, naming libraries as simple strings or repository paths.
+
+- Functions start with `func`, followed by an identifier, an optional list of arguments in parenthesis, and an optional list of return types. The opening `{` must be in that same line. Soon we'll see how to declare arguments and return types.
+
+* Short variable declarations
+
+Go is a statically typed language, but it implements a simple form of _type_inference_. This avoids repetitive declarations such as this example from a ficticious language:
+
+    EnterpriseSingletonFactoryFactory e = new EnterpriseSingletonFactoryFactory();
+
+To leverage type inference, use the `:=` operator to make the first assignment to a new variable in the source code. This is called a _short_variable_declaration_.
+
+    func main() {
+        n := 20                // int is the default type of integer literals
+        result := Factorial(n) // result will match the return type of Factorial
+        fmt.Println("Largest factorial that fits an int:")
+        fmt.Printf("\t%d! = %d\n", n, result)
+    }
+
+The compiler _infers_ (guesses) the type of the variable from the right-hand expression.
+
+Further assigments to the same variable in the same scope must use `=` (not `:=`), and cannot change the type of the variable.
+
+* Default types of constant literals
+
+.play -edit assets/01/defaultypes.go
+
+* Zero value of flat types
+
+I use _flat_types_ for types that are not pointers and have no embedded pointers.
+
+.play -edit assets/01/zerovalues.go
+
+* The `rune` type
+
+- The character type in Go is `rune`, an alias for `int32`.
+
+- A character literal is a single Unicode character enclosed in single quotes: `'A'`.
+
+- The value of `'A'` is 65 (or 0x41) stored as an `int32`.
+
+- The value of `'€'` (Euro sign) is 0x20ac stored as an `int32`.
+
+- The constant literal 0x20ac is an `int`, not an `int32`.
+
+- To code a `rune` literal using that character code you must write it as `'\u20ac'`.
+
+- You can get a `rune` from an `int` (with 32 bits or less) with `rune(myInt)`
+
+* A few different ways to display a `rune`
+
+.play -edit assets/01/int2rune.go
+
+Read about _formatting_verbs_ `%T`, `%v`, `%q` etc. in the [[https://golang.org/pkg/fmt/][`fmt` package documentation]].
+
+
+* Second test
+
+    func Example_report() {
+        report("scruple")
+        // Output:
+        // U+2108	℈	SCRUPLE
+        // 1 character found
+    }
+
+The report lists characters with three fields, separated by tabs:
+
+- Character _codepoint_ as `U+` followed by 4, 5 or 6 hexadecimal digits;
+- The character;
+- Name of the character, all uppercase.
+
+Last line of the report shows count of characters found, or "no character found".
+
+*NOTE:* The word "scruple" appears only once in `UnicodeData.txt`. Scruple is an old weight measurement ≅ 1.3g.
+
+* Lab 1.2
+
+*1.* Add the `Example_report` test to `main_test.go`.
+
+*2.* Run `go test`. Is the error message what you expected?
+
+*3.* Edit `main.go` to make the test pass. Don't implement any logic or formatting yet; just hard-code the printed string to make the test pass.
+
+*4.* Edit the `report` function creating three variables: `char`, `name`, `count` with suitable values. Use `fmt.Printf` to build each line of the report to make the test pass.
+
+*Tips*
+
+- The new function will have the signature below (we will change that later):
+
+  func report(word string) {
+
+- Use the `runenames.Name(char)` function get the name of the `rune`. Recall the different ways to show a rune we saw before.
+
+* Lab 1.2 solution
+
+.code code/01/runes012/main.go
+
+* Creating a struct type
+
+* Our CharName struct
+
+The `runes` app will scan the Unicode Character Database (UCD) and select characters that have the desired words in their name.
+
+The essential unit of data in this process is a pair made of a character and its name.
+
+In Go, we can represent such a pair with a struct type, declared like this:
+
+    type CharName struct {
+        Char rune
+        Name string
+    }
+
+*NOTE*: the names of public types, fields, and functions must start with an uppercase letter. This is not just a convention, it is enforced by the Go compiler.
+
+Go does not have "classes", but we can attach methods to types, which then behave like classes (but without inheritance). We'll do that next.
+
+* Lab 1.3: A printable struct, part 1/3
+
+*1.* Add this struct declaration to `runes/main.go`:
+
+    type CharName struct {
+        Char rune
+        Name string
+    }
+
+
+*2.* Add these imports to `runes/main_test.go`:
+
+    import (
+        "fmt"
+        "testing"
+    )
+
+The `testing` package from the Go standard library supports testing for correctness and performance (benchmarking).
+
+(lab continues...)
+
+* Lab 1.3: A printable struct, part 2/3
+
+*3.* Add this test to `runes/main_test.go`:
+
+.code -numbers code/01/runes013/main_test.go /^func Test_CharName_String/,/^}/
+
+- the `t` argument is a pointer to a `T` struct that provides several methods for running tests and reporting errors.
+
+- `fmt.Sprint` implicitly invokes a `String` method on its argument(s).
+
+- `t.Errorf` marks the test as failing and logs the error.
+
+(lab continues...)
+
+
+* Lab 1.3: A printable struct, part 3/3
+
+*3.* To pass the test in the previous slide, add a `String` method after the `CharName` struct in `main.go`. The method should have the signature shown below. Use a `fmt.Sprintf` call to build the string, similar to the `fmt.Printf` call already present in the `report` function.
+
+    func (cn CharName) String() string {
+        // return a string like this: U+XXXX<tab>Y<tab>NAME OF CHARACTER Y
+    }
+
+*NOTE*: In contrast with functions, method signatures declare the receiver object as a special argument in parenthesis right after the `func` keyword.
+
+In the example above, `cn` plays the role of the special variable `this` in Java or `self` in Python.
+
+*4.* Check that the test passes.
+
+* End of chapter 1 🎉

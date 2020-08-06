@@ -47,7 +47,7 @@ func containsAll(haystack, needles []string) bool {
 	return true
 }
 
-func filter(sample []CharName, words []string) []CharName {
+func search(sample []CharName, words []string) []CharName {
 	result := []CharName{}
 	for i, s := range words {
 		words[i] = strings.ToUpper(s)
@@ -63,7 +63,7 @@ func filter(sample []CharName, words []string) []CharName {
 }
 
 func report(words ...string) {
-	result := filter(scan(' ', unicode.MaxRune), words)
+	result := search(scan(' ', unicode.MaxRune), words)
 	for _, c := range result {
 		fmt.Println(c)
 	}
