@@ -49,8 +49,7 @@ def main():
                 learners[p.group].append(p)
 
     number_of_rooms = 3
-    check = False
-    while not check:
+    while True:
         # assign monitors
         rooms = [[] for _ in range(number_of_rooms)]
         random.shuffle(monitors)
@@ -62,16 +61,15 @@ def main():
             distribute(rooms, learner_group)
             key = len
 
-        checks = []
+        bad_distributions = []
         for group_key in group_keys:
-            dist = check_distribution(group_key, rooms)
-            checks.append(dist)
-            if not dist:
-                print(group_key, end=' ')
-        check = all(checks)
-        if not check:
-            print('not well distributed. Retrying...')
-
+            if not check_distribution(group_key, rooms):
+                bad_distributions.append(group_key)
+        if bad_distributions:
+            print(', '.join(bad_distributions), 'not well distributed. Retrying...')
+        else:
+            print('Good distribution:')
+            break  # done!
 
     for r, room in enumerate(rooms, 1):
         print('_' * 40, 'Room', r)
