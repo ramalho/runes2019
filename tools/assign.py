@@ -1,9 +1,7 @@
 import sys
 import collections
 import random
-from pprint import pprint
 from operator import attrgetter
-from functools import partial
 
 
 Person = collections.namedtuple('Person', 'monitor group name')
@@ -31,11 +29,7 @@ def check_distribution(group, rooms):
     return max(counts) - min(counts) <= 1
 
 
-def main():
-    try:
-        infile = sys.argv[1]
-    except IndexError:
-        infile = 'groups.tsv'
+def load(infile):
     monitors = []
     learners = collections.defaultdict(list)
     group_keys = set()
@@ -47,6 +41,16 @@ def main():
                 monitors.append(p)
             else:
                 learners[p.group].append(p)
+    return monitors, learners, group_keys
+
+
+def main():
+    try:
+        infile = sys.argv[1]
+    except IndexError:
+        infile = 'groups.tsv'
+
+    monitors, learners, group_keys = load(infile)
 
     number_of_rooms = 3
     while True:
