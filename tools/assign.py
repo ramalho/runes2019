@@ -24,7 +24,12 @@ def count_members(room, group):
         if p.group == group:
             g += 1
     return len(room), g
-    
+
+
+def check_distribution(group, rooms):
+    counts = [count_members(r, group)[1] for r in rooms]
+    return max(counts) - min(counts) <= 1
+
 
 def main():
     try:
@@ -33,9 +38,11 @@ def main():
         infile = 'groups.tsv'
     monitors = []
     learners = collections.defaultdict(list)
+    group_keys = set()
     with open(infile) as fp:
         for line in fp:
             p = Person(*line.rstrip().split('\t'))
+            group_keys.add(p.group)
             if p.monitor == 'y':
                 monitors.append(p)
             else:
@@ -54,9 +61,18 @@ def main():
             rooms.sort(key=len)
             distribute(rooms, learner_group)
             key = len
-    
-        check = max(count_members(r, 'TW')[1] for r in rooms) == 2
-            
+
+        checks = []
+        for group_key in group_keys:
+            dist = check_distribution(group_key, rooms)
+            checks.append(dist)
+            if not dist:
+                print(group_key, end=' ')
+        check = all(checks)
+        if not check:
+            print('not well distributed. Retrying...')
+
+
     for r, room in enumerate(rooms, 1):
         print('_' * 40, 'Room', r)
         for n, p in enumerate(sorted(room, key=attrgetter('name')), 1):
