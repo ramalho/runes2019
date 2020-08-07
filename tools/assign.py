@@ -70,7 +70,8 @@ def main():
             if not check_distribution(group_key, rooms):
                 bad_distributions.append(group_key)
         if bad_distributions:
-            print(', '.join(bad_distributions), 'not well distributed. Retrying...')
+            print(', '.join(sorted(bad_distributions)),
+                'not well distributed. Retrying...')
         else:
             print('Good distribution:')
             break  # done!
