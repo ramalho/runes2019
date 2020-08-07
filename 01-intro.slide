@@ -76,18 +76,18 @@ One of the files in the UCD is [[https://www.unicode.org/Public/UCD/latest/ucd/U
 
 * Getting character names from Go
 
-The semi-official package [[https://godoc.org/golang.org/x/text/unicode/01/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
+The semi-official package [[https://godoc.org/golang.org/x/text/uni01/runenames][runenames]] provides a single function `Name` returning the character name of the given `rune`.
 
-.play -edit assets/01/name.go
+.play -edit 01/assets/name.go
 
 
 * Beginning TDD
 
 * First test: an example test
 
-Source: `github.com/ramalho/runes2020/chapter01/code/01/runes011/...`
+Source: `github.com/ramalho/runes2020/chapter01/01/runes011/...`
 
-.code code/01/runes011/main_test.go
+.code 01/runes011/main_test.go
 
 To run, go where that file is saved. Then:
 
@@ -98,9 +98,9 @@ To run, go where that file is saved. Then:
 
 * First test passing
 
-.code code/01/runes011/main_test.go
+.code 01/runes011/main_test.go
 
-.code code/01/runes011/main.go
+.code 01/runes011/main.go
 
 Run the test:
 
@@ -130,7 +130,7 @@ Run the test:
 
 * Basic source file structure
 
-.code code/01/runes011/main.go
+.code 01/runes011/main.go
 
 - Every Go source file must start with a `package` declaration; `package` `main` is conventionally used for a stand-alone program (as opposed to a library).
 
@@ -159,13 +159,13 @@ Further assigments to the same variable in the same scope must use `=` (not `:=`
 
 * Default types of constant literals
 
-.play -edit assets/01/defaultypes.go
+.play -edit 01/assets/defaultypes.go
 
 * Zero value of flat types
 
 I use _flat_types_ for types that are not pointers and have no embedded pointers.
 
-.play -edit assets/01/zerovalues.go
+.play -edit 01/assets/zerovalues.go
 
 * The `rune` type
 
@@ -185,7 +185,7 @@ I use _flat_types_ for types that are not pointers and have no embedded pointers
 
 * A few different ways to display a `rune`
 
-.play -edit assets/01/int2rune.go
+.play -edit 01/assets/int2rune.go
 
 Read about _formatting_verbs_ `%T`, `%v`, `%q` etc. in the [[https://golang.org/pkg/fmt/][`fmt` package documentation]].
 
@@ -229,7 +229,7 @@ Last line of the report shows count of characters found, or "no character found"
 
 * Lab 1.2 solution
 
-.code code/01/runes012/main.go
+.code 01/runes012/main.go
 
 * Creating a struct type
 
@@ -275,7 +275,7 @@ The `testing` package from the Go standard library supports testing for correctn
 
 *3.* Add this test to `runes/main_test.go`:
 
-.code -numbers code/01/runes013/main_test.go /^func Test_CharName_String/,/^}/
+.code -numbers 01/runes013/main_test.go /^func Test_CharName_String/,/^}/
 
 - the `t` argument is a pointer to a `T` struct that provides several methods for running tests and reporting errors.
 
