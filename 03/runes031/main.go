@@ -27,7 +27,7 @@ func scan(start, end rune) []CharName {
 	return result
 }
 
-func filter(sample []CharName, words []string) []CharName {
+func search(sample []CharName, words []string) []CharName {
 	return []CharName{}
 }
 

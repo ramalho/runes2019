@@ -59,7 +59,7 @@ func Test_scan(t *testing.T) {
 	}
 }
 
-func Test_filter(t *testing.T) {
+func Test_search(t *testing.T) {
 	testCases := []struct {
 		start rune
 		end   rune
@@ -67,11 +67,13 @@ func Test_filter(t *testing.T) {
 		want  []CharName
 	}{
 		{' ', unicode.MaxRune, []string{"MADEUPWORD"}, []CharName{}},
+		{'\u2108', unicode.MaxRune, []string{"SCRUPLE"}, []CharName{ // HL
+			{'\u2108', "SCRUPLE"}}}, // HL
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, "+"), func(t *testing.T) {
 			sample := scan(tc.start, tc.end)
-			got := filter(sample, tc.query)
+			got := search(sample, tc.query)
 			assert.Equal(t, tc.want, got)
 		})
 	}

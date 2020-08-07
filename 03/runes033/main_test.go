@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"testing"
 	"unicode"
@@ -11,28 +10,6 @@ import (
 )
 
 func Example() {
-	oldArgs := os.Args
-	defer func() { os.Args = oldArgs }()
-	os.Args = []string{"", "EIGHTHS", "fraction"}
-	main()
-	// Output:
-	// U+215C	⅜	VULGAR FRACTION THREE EIGHTHS
-	// U+215D	⅝	VULGAR FRACTION FIVE EIGHTHS
-	// U+215E	⅞	VULGAR FRACTION SEVEN EIGHTHS
-	// 3 character(s) found
-}
-
-func Example_one_arg() {
-	oldArgs := os.Args
-	defer func() { os.Args = oldArgs }()
-	os.Args = []string{"", "cruzeiro"}
-	main()
-	// Output:
-	// U+20A2	₢	CRUZEIRO SIGN
-	// 1 character(s) found
-}
-
-func Example_no_args() {
 	main()
 	// Output:
 	// Please provide one or more words to search.
@@ -42,15 +19,7 @@ func Example_report() {
 	report("scruple")
 	// Output:
 	// U+2108	℈	SCRUPLE
-	// 1 character(s) found
-}
-
-func Example_report_2_results() {
-	report("copyright")
-	// Output:
-	// U+00A9	©	COPYRIGHT SIGN
-	// U+2117	℗	SOUND RECORDING COPYRIGHT
-	// 2 character(s) found
+	// 1 character found
 }
 
 func Test_CharName_String(t *testing.T) {
@@ -90,7 +59,7 @@ func Test_scan(t *testing.T) {
 	}
 }
 
-func Test_filter(t *testing.T) {
+func Test_search(t *testing.T) {
 	testCases := []struct {
 		start rune
 		end   rune
@@ -99,26 +68,14 @@ func Test_filter(t *testing.T) {
 	}{
 		{' ', unicode.MaxRune, []string{"MADEUPWORD"}, []CharName{}},
 		{'\u2108', unicode.MaxRune, []string{"SCRUPLE"}, []CharName{
-			{'\u2108', "SCRUPLE"},
-		}},
-		{'6', '9', []string{"SEVEN"}, []CharName{
-			{'7', "DIGIT SEVEN"},
-		}},
-		{'A', 'C', []string{"A"}, []CharName{
-			{'A', "LATIN CAPITAL LETTER A"},
-		}},
-		{',', '/', []string{"MINUS"}, []CharName{
-			{'-', "HYPHEN-MINUS"},
-		}},
-		{'?', 'C', []string{"LeTtEr", "capital"}, []CharName{
-			{'A', "LATIN CAPITAL LETTER A"},
-			{'B', "LATIN CAPITAL LETTER B"},
-		}},
+			{'\u2108', "SCRUPLE"}}},
+		{'6', '9', []string{"SEVEN"}, []CharName{ // HL
+			{'7', "DIGIT SEVEN"}}}, // HL
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, "+"), func(t *testing.T) {
 			sample := scan(tc.start, tc.end)
-			got := filter(sample, tc.query)
+			got := search(sample, tc.query)
 			assert.Equal(t, tc.want, got)
 		})
 	}
