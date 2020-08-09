@@ -11,7 +11,7 @@ https://standupdev.com/
 
 * Iterators in Go
 
-As of 2019, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two recipes to work around this limitation:
+As of 2020, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two recipes to work around this limitation:
 
 - Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code uses the iterator like this:
 
@@ -20,6 +20,10 @@ As of 2019, Go does not provide a way to implement user-defined iterators suppor
         value := iterator.Next()
         doSomethingWith(value)
     }
+
+- Implement an interface similar to [[https://golang.org/pkg/text/scanner/][text/scanner]].
+
+- Implement https://github.com/googleapis/google-cloud-go/wiki/Iterator-Guidelines (https://pkg.go.dev/google.golang.org/api/iterator)
 
 - Implement a function that spawns a coroutine to send items one by one through a channel, return that channel . Client code reads the channel using clean `for` `…` `range` syntax. This implementation is simpler. However, there is a context switch cost to run a coroutine, and the coroutine may _leak_ if it does not run to completion.
 

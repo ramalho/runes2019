@@ -66,7 +66,7 @@ func Test_search(t *testing.T) {
 		query []string
 		want  []CharName
 	}{
-		{' ', unicode.MaxRune, []string{"MADEUPWORD"}, []CharName{}},
+		{' ', unicode.MaxRune, []string{"NOSUCHWORD"}, []CharName{}},
 	}
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, "+"), func(t *testing.T) {

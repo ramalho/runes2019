@@ -66,7 +66,7 @@ func Test_search(t *testing.T) {
 		query []string
 		want  []CharName
 	}{
-		{' ', unicode.MaxRune, []string{"MADEUPWORD"}, []CharName{}},
+		{' ', unicode.MaxRune, []string{"NOSUCHWORD"}, []CharName{}},
 		{'\u2108', unicode.MaxRune, []string{"SCRUPLE"}, []CharName{
 			{'\u2108', "SCRUPLE"}}},
 		{'6', '9', []string{"SEVEN"}, []CharName{ // HL
