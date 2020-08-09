@@ -11,15 +11,9 @@ https://standupdev.com/
 
 * Iterators in Go
 
-As of 2020, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are two recipes to work around this limitation:
+As of 2020, Go does not provide a way to implement user-defined iterators supported by the `for` `…` `range` syntax. Here are some ways to implement iterators.
 
-- Implement the classic iterator pattern: an object with two methods and an internal counter. One method advances the counter, returning `false` when there are no more items. The other returns the next item. Client code uses the iterator like this:
-
-    iterator := MyIterator(iterable)
-    for iterator.Advance() {
-        value := iterator.Next()
-        doSomethingWith(value)
-    }
+- Implement the classic iterator pattern
 
 - Implement an interface similar to [[https://golang.org/pkg/text/scanner/][text/scanner]].
 
@@ -27,11 +21,34 @@ As of 2020, Go does not provide a way to implement user-defined iterators suppor
 
 - Implement a function that spawns a coroutine to send items one by one through a channel, return that channel . Client code reads the channel using clean `for` `…` `range` syntax. This implementation is simpler. However, there is a context switch cost to run a coroutine, and the coroutine may _leak_ if it does not run to completion.
 
+* Classic iterator
+
+A minimal interface for the classic iterator has two methods:
+
+- `HasNext`: advances cursor, returns `false` when there are no more items. 
+
+- `Next`: returns the next item. 
+
+Client code uses the iterator like this:
+
+    iterator := MyIterator(iterable)
+    for iterator.HasNext() {
+        value := iterator.Next()
+        doSomethingWith(value)
+    }
+
+[[https://golang.org/pkg/bufio/#Scanner][bufio/Scanner]] implements the classic iterator, using different method names: 
+
+    scanner := bufio.NewScanner(os.Stdin)
+    for scanner.Scan() {
+        fmt.Println(scanner.Text())
+    }
+
 * Iterator implementations compared
 
-.image assets/iterators/iterators-compared.png 500 _
+.image iterators/iterators-compared.png 500 _
 
-Source: `github.com/standupdev/runes2019/extra/assets/iterators/...`
+Source: `github.com/standupdev/runes2019/extra/iterators/...`
 
 * Use of a channel-based iterator
 
