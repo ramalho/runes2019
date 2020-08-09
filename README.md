@@ -1,6 +1,19 @@
 # Runes 2020
 
-An introduction to Go, using TDD and the `runefinder` example
+An introduction to Go, using TDD and the `runefinder` example.
+
+To view the slides, please install the Go `present` tool and run it from this directory:
+
+```
+$ go get golang.org/x/tools/cmd/present
+$ present
+```
+
+If the `go/bin/` directory is not in your `PATH`, you may run `present` as:
+
+```
+$ ~/go/bin/present
+```
 
 
 ## References

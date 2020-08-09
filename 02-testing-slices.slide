@@ -21,34 +21,9 @@ To make testing easier, `scan` will take two `rune` arguments setting the start 
 
     abc := scan('A', 'D')
 
-* Structure of the `runes2019` repo
-
-    runes2019
-    ├── README.md
-    ├── chapter01
-    │   ├── assets
-    │   │   ├── defaultypes.go
-    │   │   ├── fact
-    │   │   │   ├── fact.go
-    │   │   │   └── fact_test.go
-    │   │   ├── int2rune.go
-    │   │   ├── name.go
-    │   │   └── zerovalues.go
-    │   ├── intro-to-tdd.slide
-    │   ├── runes011
-    │   │   ├── main.go
-    │   │   └── main_test.go
-    │   ├── runes012
-    │   │   ├── main.go
-    │   │   └── main_test.go
-    │   └── runes013
-    │       ├── main.go
-    │       └── main_test.go
-    ⋮
-
 * Baby step 1: return slice with one `CharName`
 
-.code -numbers code/02/runes021/main_test.go /^func Test_scan_A/,/^}/
+.code -numbers 02/runes021/main_test.go /^func Test_scan_A/,/^}/
 
 Note the syntax for literal struct and slice of structs:
 
@@ -76,7 +51,7 @@ To test this, we need to compare slices. But `==` and `!=` only work for compari
 
 The most popular way of checking slices and other composite data in tests is using the `testify/assert` package, imported like this:
 
-.code -numbers code/02/runes022/main_test.go /^import/,/^\)/
+.code -numbers 02/runes022/main_test.go /^import/,/^\)/
 
 To compile the project, install the `testify` package. Run this command in the shell:
 
@@ -86,7 +61,7 @@ To compile the project, install the `testify` package. Run this command in the s
 
 With `testify` installed, we can use the `assert.Equal` function:
 
-.code -numbers code/02/runes022/main_test.go /^func Test_scan_ABC/,/^}/
+.code -numbers 02/runes022/main_test.go /^func Test_scan_ABC/,/^}/
 
 The `testify/assert` functions provide:
 
@@ -121,7 +96,7 @@ The `testify/assert` functions provide:
 
 * Baby step 2: implement loop in `scan`
 
-.code -numbers code/02/runes022/main.go /^func scan/,/^}/
+.code -numbers 02/runes022/main.go /^func scan/,/^}/
 
 The `append` function takes a slice and an element, and returns a new slice with the element appended at the end.
 
@@ -159,21 +134,21 @@ We will use this information to create a new test and change `scan` to skip unas
 
 This is a copy of the `Test_scan_ABC` test with a new name and new parameters:
 
-.code -numbers code/02/runes023/main_test.go /^func Test_scan_unassigned/,/^}/
+.code -numbers 02/runes023/main_test.go /^func Test_scan_unassigned/,/^}/
 
 * Baby step 3: skip characters with empty names
 
-.code -numbers code/02/runes023/main.go /^func scan/,/^}/
+.code -numbers 02/runes023/main.go /^func scan/,/^}/
 
 * Unnamed characters
 
 Among the assigned characters, more than 70% are CJK (Chinese/Japanese/Korean) ideographs that don't have names. For example, here is what the `runenames.Name` function says about the traditional Chinese character 氣 (qi), representing vital energy:
 
-.play -edit assets/02/qi.go
+.play -edit 02/assets/qi.go
 
 * Listing ranges of characters with duplicate names
 
-.play -edit assets/02/noname.go
+.play -edit 02/assets/noname.go
 
 * Detecting generic names
 
@@ -226,21 +201,45 @@ For example, the first 32 lines of `UnicodeData.txt` are ASCII control codes:
 
 * Table tests
 
-All four test functions we wrote for `scan` can be combined into a single test with four subtests using the `t.Run` method of `testing.T`.
+Multiple tests can be combined building a table of inputs/outputs and subtests using the `t.Run` method of `testing.T`.
 
 For details:
 
 - [[https://github.com/golang/go/wiki/TableDrivenTests][Go Wiki — TableDrivenTests]]
 
+See example on the next slide.
+
 * Example: table test with 6 subtests
 
-.code -numbers assets/02/gcd/gcd_test.go /^func TestGcd_table/,/^}/
+.code -numbers 02/assets/gcd/gcd_test.go /^func TestGcd_table/,/^}/
 
-* Refactoring with subtests
+* Lab 2.2: Refactoring with subtests
 
-The `Test_scan` function with subtests doesn't fit in a slide, but you can see it in
-[[https://github.com/ramalho/runes2020/blob/53e8093bed56d6b97a9c16f8e7ab8122ae8c0af2/code/02/runes025/main_test.go#L30][code/02/runes025/main_test.go]]
+We have coded four tests for the `scan` function:
 
-.code -numbers code/02/runes025/main_test.go /^func Test_scan/,/^}/
+    Test_scan_A
+    Test_scan_ABC
+    Test_scan_unassigned
+    Test_scan_unnamed
+
+Your task: combine them into one `Test_scan` function using a table of inputs/outputs.
+
+*Tips*
+
+- Copy the layout of the `TestGcd` example from the previous slide.
+
+- Refactor one test at a time.
+
+- Make the `Test_scan` pass using just the inputs/outputs of `Test_scan_A`, then delete that test.
+
+
+*🖐* *SPOILER* *ALERT*: The next slide shows a partial solution.
+
+* Lab 2.2: Partial solution
+
+This partial solution shows the `Test_scan` function with only one item in the inputs/ouputs table: the data from the `Test_scan_A` test.
+
+.code 02/assets/tabletest.go
+
 
 * End of chapter 2 🎉🎉
