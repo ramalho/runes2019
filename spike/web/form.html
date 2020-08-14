@@ -31,7 +31,9 @@
             let count = 0;
             results.forEach((item) => {
                 let row = document.createElement('tr');
-                appendCell(row, item.uCode, 'code');
+                let code = item.char.codePointAt(0);
+                let uCode = 'U+' + code.toString(16).padStart(4, '0').toUpperCase();
+                appendCell(row, uCode, 'code');
                 appendCell(row, item.char, 'char');
                 appendCell(row, item.name);
                 table.appendChild(row);
@@ -40,38 +42,29 @@
             let plural = "s";
             if (count===1) plural = "";
             let msg = `${count} character${plural} found`;
-            msg = document.location; // debug
             document.querySelector('caption').textContent = msg;
         }
 
-        function getResults0(query) {
-            const start = 0x1F638; // GRINNING CAT FACE WITH SMILING EYES
-            const end = start + parseInt(query);
-            const results = [];
-            for (let code = start; code < end; code++) {
-                let uCode = 'U+' + code.toString(16).padStart(4, '0').toUpperCase();
-                let char = String.fromCodePoint(code);
-                let name = 'NAME OF ' + uCode;
-                results.push({uCode: uCode, char: char, name: name})
-            }
-            return results
-        }
-
-        async function getResults(query) {
-            // TODO: use document.location, rewrite query string
-            const response = await fetch(`http://localhost:8000/words?q=${query}`);
+        async function fetchResults(query) {
+            let url = location.href.replace(location.search, '');
+            const response = await fetch(`${url}/words?q=${query}`);
             if (response.ok) {
-                return await response.json();
+                return response.json();
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
         }
 
+        function updateTable(event) {
+            const input = document.getElementById('query');
+            fetchResults(input.value)
+                .then(fillTable)
+                .catch(error => console.log(error));
+        }
+
         window.addEventListener('DOMContentLoaded', (event) => {
-            const input = document.querySelector('input');
-            input.addEventListener('change', (event) => {
-                fillTable(getResults(event.target.value));
-            });
+            const input = document.getElementById('query');
+            input.addEventListener('change', updateTable);
         });
 
 
@@ -80,16 +73,11 @@
 </head>
 <body>
     <div>
-        <input type="search" name="q" value="{{.Query}}">
-        <button>out of service</button>
+        <input id="query" type="search" name="q" value="">
+        <button onClick="updateTable">Search</button>
         </div>
     <table>
         <caption></caption>
-        <tr>
-            <th class="code">code</th>
-            <th class="char">char</th>
-            <th>name</th>
-        </tr>
     </table>
 </body>
 </html>

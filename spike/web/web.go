@@ -16,8 +16,8 @@ const hostAddr = "localhost:8000"
 
 // CharName holds a single Unicode character and its name
 type CharName struct {
-	Char string
-	Name string
+	Char string `json:"char"`
+	Name string `json:"name"`
 }
 
 var index = buildIndex(scan(0, unicode.MaxRune))
