@@ -24,19 +24,28 @@
         }
 
         function fillTable(results) {
-            const table = document.getElementById('results');
+            const table = document.querySelector('table');
+            while (table.lastElementChild.tagName === 'TR') {
+                table.removeChild(table.lastElementChild);
+            }
+            let count = 0;
             results.forEach((item) => {
                 let row = document.createElement('tr');
                 appendCell(row, item.uCode, 'code');
                 appendCell(row, item.char, 'char');
                 appendCell(row, item.name);
                 table.appendChild(row);
+                count++;
             });
+            let plural = "s";
+            if (count===1) plural = "";
+            let msg = `${count} character${plural} found`;
+            document.querySelector('caption').textContent = msg;
         }
 
-        function getResults() {
-            const start = 0x1f408;
-            const end = start + 850;
+        function getResults(query) {
+            const start = 0x1F638; // GRINNING CAT FACE WITH SMILING EYES
+            const end = start + parseInt(query);
             const results = [];
             for (let code = start; code < end; code++) {
                 let uCode = 'U+' + code.toString(16).padStart(4, '0').toUpperCase();
@@ -47,28 +56,38 @@
             return results
         }
 
+        async function getResults2(query) {
+            let response = await fetch('coffee.jpg');
+            if (!response.ok) {
+                return await response.json();
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', (event) => {
-            fillTable(getResults());
+            const input = document.querySelector('input');
+            input.addEventListener('change', (event) => {
+                fillTable(getResults(event.target.value));
+            });
         });
+
 
     </script>
 
 </head>
 <body>
-<form action="/">
-    <input type="search" name="q" value="{{.Query}}">
-    <input type="submit" value="find">
-</form>
-
-<table id="results">
-    <caption>{{.Message}}</caption>
-{{range .Result}}
-    <tr>
-        <td class="code">{{.Code}}</td>
-        <td class="char">{{.Char}}</td>
-        <td>{{.Name}}</td>
-    </tr>
-{{end}}
-</table>
+    <div>
+        <input type="search" name="q" value="{{.Query}}">
+        <button value="search">
+        </div>
+    <table>
+        <caption></caption>
+        <tr>
+            <th class="code">code</th>
+            <th class="char">char</th>
+            <th>name</th>
+        </tr>
+    </table>
 </body>
 </html>
