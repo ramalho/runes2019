@@ -40,10 +40,11 @@
             let plural = "s";
             if (count===1) plural = "";
             let msg = `${count} character${plural} found`;
+            msg = document.location; // debug
             document.querySelector('caption').textContent = msg;
         }
 
-        function getResults(query) {
+        function getResults0(query) {
             const start = 0x1F638; // GRINNING CAT FACE WITH SMILING EYES
             const end = start + parseInt(query);
             const results = [];
@@ -56,9 +57,10 @@
             return results
         }
 
-        async function getResults2(query) {
-            let response = await fetch('coffee.jpg');
-            if (!response.ok) {
+        async function getResults(query) {
+            // TODO: use document.location, rewrite query string
+            const response = await fetch(`http://localhost:8000/words?q=${query}`);
+            if (response.ok) {
                 return await response.json();
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -79,7 +81,7 @@
 <body>
     <div>
         <input type="search" name="q" value="{{.Query}}">
-        <button value="search">
+        <button>out of service</button>
         </div>
     <table>
         <caption></caption>
