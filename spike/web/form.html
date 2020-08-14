@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Runefinder</title>
+    <style>
+        body {font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}
+        table {font-family: "Lucida Console", "Monaco", monospace;
+               text-align: left; min-width: 300px}
+        td.code {min-width: 40px; text-align: right;}
+        td.char {min-width: 50px; text-align: center;}
+        caption {background: lightgray; }
+    </style>
+    <script>
+        "use strict";
+
+        function appendCell(row, text, class_) {
+            let cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(text));
+            if (class_ !== undefined) {
+                cell.setAttribute('class', class_);
+            }
+            row.appendChild(cell);
+        }
+
+        function fillTable(results) {
+            const table = document.getElementById('results');
+            results.forEach((item) => {
+                let row = document.createElement('tr');
+                appendCell(row, item.uCode, 'code');
+                appendCell(row, item.char, 'char');
+                appendCell(row, item.name);
+                table.appendChild(row);
+            });
+        }
+
+        function getResults() {
+            const start = 0x1f408;
+            const end = start + 850;
+            const results = [];
+            for (let code = start; code < end; code++) {
+                let uCode = 'U+' + code.toString(16).padStart(4, '0').toUpperCase();
+                let char = String.fromCodePoint(code);
+                let name = 'NAME OF ' + uCode;
+                results.push({uCode: uCode, char: char, name: name})
+            }
+            return results
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            fillTable(getResults());
+        });
+
+    </script>
+
+</head>
+<body>
+<form action="/">
+    <input type="search" name="q" value="{{.Query}}">
+    <input type="submit" value="find">
+</form>
+
+<table id="results">
+    <caption>{{.Message}}</caption>
+{{range .Result}}
+    <tr>
+        <td class="code">{{.Code}}</td>
+        <td class="char">{{.Char}}</td>
+        <td>{{.Name}}</td>
+    </tr>
+{{end}}
+</table>
+</body>
+</html>
