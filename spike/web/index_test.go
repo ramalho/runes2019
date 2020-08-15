@@ -51,6 +51,8 @@ func Test_tokenize(t *testing.T) {
 			[]string{"EXCLAMATION", "MARK"}},
 		{"HYPHEN-MINUS",
 			[]string{"HYPHEN", "MINUS"}},
+		{"",
+			[]string{}},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {

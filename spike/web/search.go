@@ -8,9 +8,10 @@ import (
 
 // Search takes a runefinder.Index and a query; returns a matching set of runes.
 func Search(index Index, query string) (result runeset.Set) {
-	query = strings.Replace(query, "-", " ", -1)
-	query = strings.ToUpper(query)
-	words := strings.Fields(query)
+	words := tokenize(strings.ToUpper(query))
+	if len(words) == 0 {
+		return runeset.Set{}
+	}
 	chars, found := index[words[0]]
 	if !found {
 		return runeset.Set{}

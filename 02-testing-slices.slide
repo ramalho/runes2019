@@ -1,4 +1,4 @@
-Go and TDD: testing slices
+Slices and table tests
 Chapter 2
 03 Aug 2020
 Tags: golang, tdd, testing, unicode
@@ -142,17 +142,17 @@ This is a copy of the `Test_scan_ABC` test with a new name and new parameters:
 
 * Unnamed characters
 
-Among the assigned characters, more than 70% are CJK (Chinese/Japanese/Korean) ideographs that don't have names. For example, here is what the `runenames.Name` function says about the traditional Chinese character 氣 (qi), representing vital energy:
+Among the assigned characters, more than 70% are CJK (Chinese/Japanese/Korean) ideographs that are not individually named. For example, here is what the `runenames.Name` function says about the traditional Chinese character 氣 (qi), meaning "vital energy":
 
 .play -edit 02/assets/qi.go
 
-* Listing ranges of characters with duplicate names
+* Listing ranges of characters that don't have unique names
 
 .play -edit 02/assets/noname.go
 
 * Detecting generic names
 
-If a character does not have a unique name in `UnicodeData.txt`, then `runenames.Name` returns a string inside `<…>`.
+If a character does not have a unique name in `UnicodeData.txt`, then `runenames.Name` returns its generic name inside `<…>`.
 
 For example, the first 32 lines of `UnicodeData.txt` are ASCII control codes:
 
@@ -197,7 +197,7 @@ For example, the first 32 lines of `UnicodeData.txt` are ASCII control codes:
 
 - In Go, the boolean *or* operator is the same as Java, JavaScript, etc.
 
-- The safest way to check the prefix of a string is to use [[https://golang.org/pkg/strings/#HasPrefix][strings.HasPrefix]]. You'll need to import the `strings` package.
+- The best way to check the prefix of a string is to use [[https://golang.org/pkg/strings/#HasPrefix][strings.HasPrefix]]. You'll need to import the `strings` package.
 
 * Table tests
 

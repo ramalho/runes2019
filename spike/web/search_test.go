@@ -21,6 +21,7 @@ func TestSearch(t *testing.T) {
 		{"fraction eighths bang", runeset.Set{}},
 		{"fraction eighths five", runeset.Make('⅝')},
 		{"NoSuchRune", runeset.Set{}},
+		{"", runeset.Set{}},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.query, func(t *testing.T) {

@@ -23,7 +23,7 @@ type CharName struct {
 var index = buildIndex(scan(0, unicode.MaxRune))
 
 func main() {
-	fmt.Println("Serving on:", hostAddr)
+	fmt.Printf("Serving on: http://%s", hostAddr)
 	http.HandleFunc("/words", WordSearch)
 	http.HandleFunc("/", Form)
 	log.Fatal(http.ListenAndServe(hostAddr, nil))
