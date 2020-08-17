@@ -40,9 +40,9 @@ func tokenize(name string) []string {
 	return strings.Fields(name)
 }
 
-func buildIndex(RuneNames <-chan RuneName) (index Index) {
+func buildIndex(runeNames <-chan RuneName) (index Index) {
 	index = Index{}
-	for cn := range RuneNames {
+	for cn := range runeNames {
 		for _, word := range tokenize(cn.Name) {
 			runes, found := index[word]
 			if found {
