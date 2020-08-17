@@ -8,7 +8,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/standupdev/runeset"
 	"golang.org/x/text/unicode/runenames"
 )
 
@@ -34,9 +33,9 @@ func Form(w http.ResponseWriter, req *http.Request) {
 	http.ServeFile(w, req, "form.html")
 }
 
-func makeResults(chars runeset.Set) []CharName {
+func makeResults(chars []rune) []CharName {
 	result := []CharName{}
-	for _, char := range chars.Sorted() {
+	for _, char := range chars {
 		result = append(result, CharName{
 			Char: string(char),
 			Name: runenames.Name(char),
@@ -47,7 +46,7 @@ func makeResults(chars runeset.Set) []CharName {
 
 // WordSearch returns characters that have query words in their names
 func WordSearch(w http.ResponseWriter, req *http.Request) {
-	chars := runeset.Set{}
+	chars := []rune{}
 	query := strings.TrimSpace(req.URL.Query().Get("q"))
 	if len(query) > 0 {
 		chars = Search(index, query)

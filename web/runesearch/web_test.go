@@ -7,21 +7,20 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/standupdev/runeset"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_makeResults(t *testing.T) {
 	var testCases = []struct {
-		given runeset.Set
+		given []rune
 		want  []CharName
 	}{
-		{runeset.Set{}, []CharName{}},
-		{runeset.Make('2', '0', '3', '1'), []CharName{
-			{"0", "DIGIT ZERO"},
-			{"1", "DIGIT ONE"},
+		{[]rune{}, []CharName{}},
+		{[]rune{'2', '0', '3', '1'}, []CharName{
 			{"2", "DIGIT TWO"},
+			{"0", "DIGIT ZERO"},
 			{"3", "DIGIT THREE"},
+			{"1", "DIGIT ONE"},
 		}},
 	}
 	for _, tc := range testCases {

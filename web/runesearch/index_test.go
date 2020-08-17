@@ -104,18 +104,26 @@ func Test_buildIndex_all(t *testing.T) {
 
 var fullIndex = buildIndex(scan(0, unicode.MaxRune))
 
+/*
+002D;HYPHEN-MINUS;Pd;0;ES;;;;;N;;;;;
+002E;FULL STOP;Po;0;CS;;;;;N;PERIOD;;;;
+002F;SOLIDUS;Po;0;CS;;;;;N;SLASH;;;;
+0030;DIGIT ZERO;Nd;0;EN;;0;0;0;N;;;;;
+0031;DIGIT ONE;Nd;0;EN;;1;1;1;N;;;;;
+*/
+
 func TestSearch(t *testing.T) {
 	var testCases = []struct {
 		query string
-		want  runeset.Set
+		want  []rune
 	}{
-		{"Registered", runeset.Make('®')},
-		{"ORDINAL", runeset.Make('ª', 'º')},
-		{"fraction eighths", runeset.Make('⅜', '⅝', '⅞')},
-		{"fraction eighths bang", runeset.Set{}},
-		{"fraction eighths five", runeset.Make('⅝')},
-		{"NoSuchRune", runeset.Set{}},
-		{"", runeset.Set{}},
+		{"Registered", []rune{'®'}},
+		{"ORDINAL", []rune{'ª', 'º'}},
+		{"fraction eighths", []rune{'⅜', '⅝', '⅞'}},
+		{"fraction eighths bang", []rune{}},
+		{"NoSuchRune", []rune{}},
+		{"fraction eighths five", []rune{'⅝'}},
+		{"", []rune{}},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.query, func(t *testing.T) {
@@ -125,11 +133,19 @@ func TestSearch(t *testing.T) {
 	}
 }
 
+func contains(haystack []rune, needle rune) bool {
+    for _, char := range haystack {
+        if char == needle {
+            return true
+        }
+    }
+    return false
+}
 func TestSearch_hyphenatedQuery(t *testing.T) {
 	query := "HYPHEN-MINUS"
 	want := '-'
 	got := Search(fullIndex, query)
-	if !got.Contains(want) {
+	if ! contains(got, want) {
 		t.Errorf("query: %q\t%q absent, got: %v",
 			query, want, got)
 	}
