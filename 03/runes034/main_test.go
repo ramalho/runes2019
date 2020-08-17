@@ -33,6 +33,9 @@ func Example_one_arg() {
 }
 
 func Example_no_args() {
+	oldArgs := os.Args
+	defer func() { os.Args = oldArgs }()
+	os.Args = []string{""}
 	main()
 	// Output:
 	// Please provide one or more words to search.
