@@ -5,7 +5,8 @@ import "fmt"
 
 func abbreviate(words []string) []string {
 	result := make([]string, len(words)) // HL
-	for i, w := range words {            // HL
+	copy(result, words)                  // copy(to, from); to ← from // HL
+	for i, w := range result {           // HL
 		result[i] = w[:3] // HL
 	}
 	return result

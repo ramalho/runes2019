@@ -42,6 +42,10 @@ Go has managed pointers:
 
 - Memory is deallocated by the garbage collector.
 
+ Note: the `unsafe` package breaks all the rules, allowing arbitrary memory access.
+ It's mostly used for low-level interfacing with external libraries and... is not safe!
+
+
 * Pointer syntax
 
 Basic pointer syntax is similar to C.
@@ -68,7 +72,7 @@ Fixed:
 
 * Method with pointer receiver
 
-Note: no need to use `&` when invoking `s.addCredits()` in this example. See ([[https://stackoverflow.com/questions/9958064/go-syntax-of-calling-a-function-with-pointer-receiver][why]]).
+Note: no need to use `&` when invoking `s.addCredits()` in this example. [[https://stackoverflow.com/questions/9958064/go-syntax-of-calling-a-function-with-pointer-receiver][(explanation)]]
 
 .play -edit 05/pointers/student_method_ok.go
 
@@ -78,29 +82,31 @@ Note: no need to use `&` when invoking `s.addCredits()` in this example. See ([[
 
 - String data is immutable in Go.
 
-- String variables holds a hidden struct with two fields: the current length and a pointer to the string in the heap.
+- A string variable holds a hidden struct with two fields: the current length and a pointer to the string in the heap.
 
 - `len(s)` returns the value of the hidden `length` field.
 
 - Passing strings to functions is efficient: only two machine words are copied.
 
-- String variables cannot be `nil`.
+- `nil` cannot be assigned to string variables.
 
 * Memory layout of strings
 
 .play -edit 05/strings/inspect.go /^func main/,/^}/
 
+`inspectString()` uses `unsafe` package to access arbitrary memory. [[https://github.com/ramalho/runes2020/blob/75c7fe97d7e92923f76f8e01b838ef622aa45fa0/05/strings/inspect.go#L9][(source)]]
+
 * Strings as parameters: function must return a new string
 
 .play -edit 05/strings/replace.go
 
-* Pointers as parameters
+* Evil example: pointers as parameters
 
 🚨 Pointer parameters can change bindings in-place—even for immutable values!
 
 .play -edit 05/pointers/replace_in_place.go
 
-* Pointers as parameters (2)
+* Evil example: pointers as parameters (2)
 
 .play -edit 05/pointers/replace_in_place_2.go
 
@@ -128,7 +134,7 @@ Note: `m0` is a nil map!
 
 .play -edit 05/maps/nil_map.go
 
-🚨 nil maps: reading returns zero value, assigning panics!
+🚨 nil maps: reading returns zero value, but assigning to a key panics!
 
 Use literal syntax `map[K]V{}` or `make(map[K]V)` to build usable maps.
 
@@ -160,11 +166,15 @@ Figure 4.1 from [[http://www.gopl.io/][GOPL]].
 
 .play -edit 05/slices/change_items.go
 
-* Safer: copy slice before updating
+* Safer: create new slice
 
 .play -edit 05/slices/change_items_safe.go
 
-* Expensive and slow, but safe: create new slice with changes
+* Safer, optimized: copy slice before updating
+
+.play -edit 05/slices/change_items_safe_2.go
+
+* Different example, also safe: create new slice with changes
 
 .play -edit 05/slices/safe_remove.go
 
