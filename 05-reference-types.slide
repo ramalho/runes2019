@@ -30,22 +30,6 @@ For example, a slice variable holds a hidden struct with three fields.
 
 ¹ Not covered in this chapter
 
-* Strings
-
-* Strings
-
-- String data is immutable in Go.
-
-- String variables hold two machine words: the length and a pointer to the string in the heap.
-
-- Passing strings to functions is efficient: only two machine words are copied.
-
-- String variables cannot be `nil`.
-
-* Strings as parameters: function must return a new string
-
-.play -edit 05/strings/replace.go
-
 * Pointers
 
 * Pointers
@@ -54,7 +38,7 @@ Go has managed pointers:
 
 - There is no pointer arithmetic.
 
-- Memory is allocated by `make`, literals, and assignments (which copy).
+- Memory is allocated by `make()`, `new()`, literals, and assignments (which copy).
 
 - Memory is deallocated by the garbage collector.
 
@@ -84,10 +68,31 @@ Fixed:
 
 * Method with pointer receiver
 
-Note: no need to use `&` in this example.
+Note: no need to use `&` when invoking `s.addCredits()` in this example. See ([[https://stackoverflow.com/questions/9958064/go-syntax-of-calling-a-function-with-pointer-receiver][why]]).
 
 .play -edit 05/pointers/student_method_ok.go
 
+* Strings
+
+* Strings
+
+- String data is immutable in Go.
+
+- String variables holds a hidden struct with two fields: the current length and a pointer to the string in the heap.
+
+- `len(s)` returns the value of the hidden `length` field.
+
+- Passing strings to functions is efficient: only two machine words are copied.
+
+- String variables cannot be `nil`.
+
+* Memory layout of strings
+
+.play -edit 05/strings/inspect.go /^func main/,/^}/
+
+* Strings as parameters: function must return a new string
+
+.play -edit 05/strings/replace.go
 
 * Pointers as parameters
 
