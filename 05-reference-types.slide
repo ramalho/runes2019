@@ -156,19 +156,23 @@ Figure 4.1 from [[http://www.gopl.io/][GOPL]].
 
 * Slices as parameters
 
-“Slices hold references to an underlying array, and if you assign one slice to another, both refer to the same array.” [[https://golang.org/doc/effective_go.html#slices][(Effective Go)]]
+🚨 “Slices hold references to an underlying array, and if you assign one slice to another, both refer to the same array.” [[https://golang.org/doc/effective_go.html#slices][(Effective Go)]]
 
 .play -edit 05/slices/change_items.go
 
-* Fast but dangerous: change slice in-place
+* Safer: copy slice before updating
+
+.play -edit 05/slices/change_items_safe.go
+
+* Expensive and slow, but safe: create new slice with changes
+
+.play -edit 05/slices/safe_remove.go
+
+* Cheaper and faster, but dangerous: change slice in-place
 
 .play -edit 05/slices/fast_remove.go
 
 Based on example from [[http://www.gopl.io/][GOPL]], section 4.2.2—In-Place Slice Techniques
-
-* Slower but safe: create new slice with changes
-
-.play -edit 05/slices/safe_remove.go
 
 * make()
 
