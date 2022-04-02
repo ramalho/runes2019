@@ -1,0 +1,212 @@
+Basic reference types
+Chapter 2
+18 Aug 2020
+Tags: golang, variable, types, aliasing, values, references, pointers
+
+Luciano Ramalho
+Principal Consultant, ThoughtWorks
+luciano.ramalho@thoughtworks.com
+https://standupdev.com/
+@ramalhoorg
+
+* Variable models in languages
+
+.image 05/varmodels-languages.png
+
+Unlike Python, Go allows `nil` references.
+
+Some Go reference variables hold more than a pointer.
+For example, a slice variable holds a hidden struct with three fields.
+
+* Reference types
+
+- string
+- pointer
+- map
+- slice
+- channel¹
+- function¹
+- interface¹
+
+¹ Not covered in this chapter
+
+* Pointers
+
+* Pointers
+
+Go has managed pointers:
+
+- There is no pointer arithmetic.
+
+- Memory is allocated by `make()`, `new()`, literals, and assignments (which copy).
+
+- Memory is deallocated by the garbage collector.
+
+ Note: the `unsafe` package breaks all the rules, allowing arbitrary memory access.
+ It's mostly used for low-level interfacing with external libraries and... is not safe!
+
+
+* Pointer syntax
+
+Basic pointer syntax is similar to C.
+
+.play -edit 05/pointers/student.go
+
+* Struct as function parameter
+
+🤔 What is wrong? And why?
+
+.play -edit 05/pointers/student_func_wrong.go
+
+* Struct pointer as function parameter
+
+Fixed:
+
+.play -edit 05/pointers/student_func_ok.go
+
+* Method with struct receiver
+
+🤔 What is wrong? And why?
+
+.play -edit 05/pointers/student_method_wrong.go
+
+* Method with pointer receiver
+
+Note: no need to use `&` when invoking `s.addCredits()` in this example. [[https://stackoverflow.com/questions/9958064/go-syntax-of-calling-a-function-with-pointer-receiver][(explanation)]]
+
+.play -edit 05/pointers/student_method_ok.go
+
+* Strings
+
+* Strings
+
+- String data is immutable in Go.
+
+- A string variable holds a hidden struct with two fields: the current length and a pointer to the string in the heap.
+
+- `len(s)` returns the value of the hidden `length` field.
+
+- Passing strings to functions is efficient: only two machine words are copied.
+
+- `nil` cannot be assigned to string variables.
+
+* Memory layout of strings
+
+.play -edit 05/strings/inspect.go /^func main/,/^}/
+
+`inspectString()` uses `unsafe` package to access arbitrary memory. [[https://github.com/ramalho/runes2020/blob/75c7fe97d7e92923f76f8e01b838ef622aa45fa0/05/strings/inspect.go#L9][(source)]]
+
+* Strings as parameters: function must return a new string
+
+.play -edit 05/strings/replace.go
+
+* Evil example: pointers as parameters
+
+🚨 Pointer parameters can change bindings in-place—even for immutable values!
+
+.play -edit 05/pointers/replace_in_place.go
+
+* Evil example: pointers as parameters (2)
+
+.play -edit 05/pointers/replace_in_place_2.go
+
+* Maps
+
+* Using a map
+
+.play -edit 05/maps/get_element.go
+
+* Building maps
+
+.play -edit 05/maps/make_map.go
+
+Maps grow dinamically: calling `make()` with initial size is an optimization.
+
+Note: `m0` is a nil map!
+
+* Maps as parameters
+
+“Like slices, maps hold references to an underlying data structure.” [[https://golang.org/doc/effective_go.html#maps][(Effective Go)]]
+
+.play -edit 05/maps/param_map.go
+
+* Nil maps cannot store values
+
+.play -edit 05/maps/nil_map.go
+
+🚨 nil maps: reading returns zero value, but assigning to a key panics!
+
+Use literal syntax `map[K]V{}` or `make(map[K]V)` to build usable maps.
+
+* Slices
+
+* Building slices
+
+.play -edit 05/slices/make.go
+
+Calling `make()` with `len` and `cap` is an optimization.
+
+Slices can grow beyond `cap` with `append`: it may allocate a new underlying array.
+
+* Using slices
+
+.play -edit 05/slices/months.go
+
+Based on example from [[http://www.gopl.io/][GOPL]], section 4.2—Slices.
+
+* Three overlapping slices, one underlying array
+
+.image 05/overlapping-slices.png
+
+Figure 4.1 from [[http://www.gopl.io/][GOPL]].
+
+* Slices as parameters
+
+🚨 “Slices hold references to an underlying array, and if you assign one slice to another, both refer to the same array.” [[https://golang.org/doc/effective_go.html#slices][(Effective Go)]]
+
+.play -edit 05/slices/change_items.go
+
+* Safer: create new slice
+
+.play -edit 05/slices/change_items_safe.go
+
+* Safer, optimized: copy slice before updating
+
+.play -edit 05/slices/change_items_safe_2.go
+
+* Different example, also safe: create new slice with changes
+
+.play -edit 05/slices/safe_remove.go
+
+* Cheaper and faster, but dangerous: change slice in-place
+
+.play -edit 05/slices/fast_remove.go
+
+Based on example from [[http://www.gopl.io/][GOPL]], section 4.2.2—In-Place Slice Techniques
+
+* make()
+
+* make() exists to build objects of 3 kinds
+
+maps
+
+    m0 := make(map[int]string)      // map with "small starting size"
+    m1 := make(map[int]string, 10)  // sized to hold at least 10 items
+
+slices
+
+    s0 := make([]int, 0)           // same as:  s0 := []int{}
+    s1 := make([]int, 10)          // len = 10; cap = 10
+    s2 := make([]int, 10, 10_000)  // len = 10; cap = 10,000
+
+channels
+
+    c0 := make(chan int)          // unbuffered channel
+    c1 := make(chan int, 10_000)  // channel with buffer for 10,000 items
+
+References:
+
+- [[https://golang.org/pkg/builtin/#make][make]] function documentation
+- Effective Go: allocation with [[https://golang.org/doc/effective_go.html#allocation_new][new]] and [[https://golang.org/doc/effective_go.html#allocation_make][make]]
+
+* End of chapter 5 🎉🎉🎉

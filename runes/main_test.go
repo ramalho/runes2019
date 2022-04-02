@@ -83,7 +83,7 @@ func Test_scan(t *testing.T) {
 	}
 }
 
-func Test_filter(t *testing.T) {
+func Test_search(t *testing.T) {
 	start := '\x00'
 	end := unicode.MaxRune
 	testCases := []struct {
@@ -115,7 +115,7 @@ func Test_filter(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(strings.Join(tc.query, ":"), func(t *testing.T) {
 			actual := []CharName{}
-			for cn := range filter(scan(start, end), tc.query) {
+			for cn := range search(scan(start, end), tc.query) {
 				actual = append(actual, cn)
 			}
 			assert.Equal(t, tc.expected, actual)

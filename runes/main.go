@@ -57,7 +57,7 @@ func tokenize(text string) []string {
 	return strings.FieldsFunc(strings.ToUpper(text), f)
 }
 
-func filter(iterator <-chan CharName, query []string) <-chan CharName {
+func search(iterator <-chan CharName, query []string) <-chan CharName {
 	query = tokenize(strings.Join(query, " "))
 	output := make(chan CharName)
 	go func() {
@@ -89,7 +89,7 @@ func quantify(n int) (count, plural string) {
 func report(words ...string) {
 	scanner := scan(' ', unicode.MaxRune)
 	count := 0
-	for charName := range filter(scanner, words) {
+	for charName := range search(scanner, words) {
 		fmt.Printf("%s\n", charName.display())
 		count++
 	}
